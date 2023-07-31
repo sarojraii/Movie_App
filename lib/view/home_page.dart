@@ -170,12 +170,24 @@ class _HomePageState extends State<HomePage> {
                                 border:
                                     Border.all(color: Colors.white, width: 2.0),
                                 borderRadius: BorderRadius.circular(15)),
-                            child: const Center(
-                              child: Text(
-                                '+ List',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.white,
+                            child: Center(
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MyList(),
+                                    ),
+                                  );
+                                },
+                                child: const Center(
+                                  child: Text(
+                                    '+ List',
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.white,
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -308,7 +320,8 @@ class _HomePageState extends State<HomePage> {
         child: NavigationBar(
           height: 60,
           backgroundColor: Colors.blueGrey[900],
-          selectedIndex: index,
+          selectedIndex:
+              index, // its value determines which tab is active and highlighted in the bottom navigation bar.
           onDestinationSelected: (int newIndex) {
             setState(() {
               index = newIndex;
