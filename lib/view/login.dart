@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/view/dashboard.dart';
 import 'package:movie_app/view/home_page.dart';
 
 class LoginPage extends StatelessWidget {
@@ -114,7 +115,8 @@ class LoginPage extends StatelessWidget {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => HomePage()),
+                        MaterialPageRoute(
+                            builder: (context) => DashboardPage()),
                       );
                     },
                     child: const Text(

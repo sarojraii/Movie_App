@@ -310,61 +310,61 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       ),
-      bottomNavigationBar: NavigationBarTheme(
-        data: NavigationBarThemeData(
-          indicatorColor: Colors.blue[100],
-          labelTextStyle: MaterialStatePropertyAll(
-            TextStyle(fontSize: 14),
-          ),
-        ),
-        child: NavigationBar(
-          height: 60,
-          backgroundColor: Colors.blueGrey[900],
-          selectedIndex:
-              index, // its value determines which tab is active and highlighted in the bottom navigation bar.
-          onDestinationSelected: (int newIndex) {
-            setState(() {
-              index = newIndex;
-            });
-            if (index == 1) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ExplorePage()),
-              );
-            }
-            if (index == 2) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => MyList()),
-              );
-            }
-            if (index == 3) {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ProfilePage()),
-              );
-            }
-          },
-          destinations: const [
-            NavigationDestination(
-              icon: Icon(Icons.home),
-              label: 'Home',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.explore),
-              label: 'Explore',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.list),
-              label: 'My List',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.account_circle),
-              label: 'Profile',
-            ),
-          ],
-        ),
-      ),
+      // bottomNavigationBar: NavigationBarTheme(
+      //   data: NavigationBarThemeData(
+      //     indicatorColor: Colors.blue[100],
+      //     labelTextStyle: MaterialStatePropertyAll(
+      //       TextStyle(fontSize: 14),
+      //     ),
+      //   ),
+      //   child: NavigationBar(
+      //     height: 60,
+      //     backgroundColor: Colors.blueGrey[900],
+      //     selectedIndex:
+      //         index, // its value determines which tab is active and highlighted in the bottom navigation bar.
+      //     onDestinationSelected: (int newIndex) {
+      //       setState(() {
+      //         index = newIndex;
+      //       });
+      //       if (index == 1) {
+      //         Navigator.push(
+      //           context,
+      //           MaterialPageRoute(builder: (context) => ExplorePage()),
+      //         );
+      //       }
+      //       if (index == 2) {
+      //         Navigator.push(
+      //           context,
+      //           MaterialPageRoute(builder: (context) => MyList()),
+      //         );
+      //       }
+      //       if (index == 3) {
+      //         Navigator.push(
+      //           context,
+      //           MaterialPageRoute(builder: (context) => ProfilePage()),
+      //         );
+      //       }
+      //     },
+      //     destinations: const [
+      //       NavigationDestination(
+      //         icon: Icon(Icons.home),
+      //         label: 'Home',
+      //       ),
+      //       NavigationDestination(
+      //         icon: Icon(Icons.explore),
+      //         label: 'Explore',
+      //       ),
+      //       NavigationDestination(
+      //         icon: Icon(Icons.list),
+      //         label: 'My List',
+      //       ),
+      //       NavigationDestination(
+      //         icon: Icon(Icons.account_circle),
+      //         label: 'Profile',
+      //       ),
+      //     ],
+      //   ),
+      // ),
     );
   }
 }
