@@ -40,7 +40,7 @@ class _ProfilePageState extends State<ProfilePage> {
             const Center(
               child: CircleAvatar(
                 backgroundColor: Colors.white,
-                radius: 90,
+                radius: 70,
                 child: Icon(
                   Icons.person,
                   size: 100,

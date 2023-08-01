@@ -1,5 +1,8 @@
+import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/view/home_page.dart';
+import 'package:movie_app/view/login.dart';
+import 'package:movie_app/view/splash.dart';
 
 void main() {
   runApp(const MyApp());
@@ -10,9 +13,23 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: HomePage(),
+      home: AnimatedSplashScreen(
+          duration: 3000,
+          splash: Center(
+            child: Container(
+              height: 700,
+              width: 500,
+              child: Image(
+                image: NetworkImage(
+                  'https://s.tmimgcdn.com/scr/800x500/77700/letter-m-logo-template_77760-2-original.jpg',
+                ),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          nextScreen: LoginPage()),
     );
   }
 }
