@@ -1,7 +1,5 @@
+import 'package:another_carousel_pro/another_carousel_pro.dart';
 import 'package:flutter/material.dart';
-import 'package:movie_app/view/explore_page.dart';
-import 'package:movie_app/view/my_list.dart';
-import 'package:movie_app/view/profile_page.dart';
 
 class Item {
   final String urlImage;
@@ -93,132 +91,39 @@ class _HomePageState extends State<HomePage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Stack(
-                children: [
-                  const Image(
-                    image: NetworkImage(
-                      'https://wallpaperaccess.com/full/88450.jpg',
-                    ),
-                  ),
-                  const Positioned(
-                    top: 20,
-                    left: 300,
-                    child: Icon(
-                      Icons.search,
-                      size: 30,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const Positioned(
-                    top: 20,
-                    left: 350,
-                    child: Icon(
-                      Icons.notifications,
-                      size: 30,
-                      color: Colors.white,
-                    ),
-                  ),
-                  const Positioned(
-                    bottom: 55,
-                    left: 10,
-                    child: Column(
-                      children: [
-                        Text(
-                          "Black Panther",
-                          style: TextStyle(color: Colors.white, fontSize: 30),
-                        ),
-                        SizedBox(
-                          height: 9,
-                        ),
-                        Text(
-                          "Action, Superhero, sci-fi",
-                          style: TextStyle(color: Colors.white, fontSize: 17),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Positioned(
-                    bottom: 3,
-                    left: 5,
-                    child: Row(
-                      children: [
-                        Padding(
-                          padding: EdgeInsets.all(9.0),
-                          child: Container(
-                            height: 30,
-                            width: 90,
-                            decoration: BoxDecoration(
-                                color: Colors.red,
-                                borderRadius: BorderRadius.circular(15)),
-                            child: const Center(
-                              child: Text(
-                                'Play',
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.white,
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(12.0),
-                          child: Container(
-                            height: 30,
-                            width: 90,
-                            decoration: BoxDecoration(
-                                border:
-                                    Border.all(color: Colors.white, width: 2.0),
-                                borderRadius: BorderRadius.circular(15)),
-                            child: Center(
-                              child: InkWell(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => MyList(),
-                                    ),
-                                  );
-                                },
-                                child: const Center(
-                                  child: Text(
-                                    '+ List',
-                                    style: TextStyle(
-                                      fontSize: 20,
-                                      color: Colors.white,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              const Padding(
-                padding: EdgeInsets.all(10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              Container(
+                height: 250,
+                width: double.infinity,
+                child: Stack(
                   children: [
-                    Text(
-                      "Top 10 Movies This Week",
-                      style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20),
-                    ),
-                    Text(
-                      "See all",
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: Colors.red),
+                    AnotherCarousel(
+                      images: const [
+                        Stacker(
+                          text: 'Black Panther',
+                          text2: 'Superhero, Action, Adventure',
+                          text3: 'Play',
+                          text4: '+ List',
+                          imagePath: 'image/panther.jpg',
+                        ),
+                        Stacker(
+                          text: 'Guardian of Galaxy',
+                          text2: 'Superhero, Action, Adventure',
+                          text3: 'Play',
+                          text4: '+ List',
+                          imagePath: 'image/gog.jpg',
+                        ),
+                        Stacker(
+                          text: 'Captain America',
+                          text2: 'Superhero, Action, Adventure',
+                          text3: 'Play',
+                          text4: '+ List',
+                          imagePath: 'image/captain.jpg',
+                        ),
+                      ],
+                      boxFit: BoxFit.fill,
+                      dotSize: 6,
+                      indicatorBgPadding: 3.0,
+                      animationDuration: const Duration(seconds: 1),
                     ),
                   ],
                 ),
@@ -365,6 +270,86 @@ class _HomePageState extends State<HomePage> {
       //     ],
       //   ),
       // ),
+    );
+  }
+}
+
+class Stacker extends StatelessWidget {
+  final String text;
+  final String text2;
+  final String text3;
+  final String text4;
+  final String imagePath;
+
+  const Stacker({
+    required this.text,
+    required this.text2,
+    required this.text3,
+    required this.text4,
+    required this.imagePath,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Stack(
+      children: [
+        Image(
+          image: AssetImage(imagePath),
+          fit: BoxFit.cover,
+        ),
+        Positioned(
+          top: 120,
+          left: 10,
+          child: Text(
+            text,
+            style: const TextStyle(fontSize: 25, color: Colors.white),
+          ),
+        ),
+        Positioned(
+          top: 150,
+          left: 10,
+          child: Text(
+            text2,
+            style: const TextStyle(fontSize: 20, color: Colors.white),
+          ),
+        ),
+        Positioned(
+          top: 190,
+          left: 10,
+          child: Row(
+            children: [
+              Container(
+                height: 27,
+                width: 80,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20), color: Colors.red),
+                child: Center(
+                  child: Text(
+                    text3,
+                    style: const TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                width: 20,
+              ),
+              Container(
+                height: 27,
+                width: 80,
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(width: 2, color: Colors.white)),
+                child: Center(
+                  child: Text(
+                    text4,
+                    style: const TextStyle(fontSize: 20, color: Colors.white),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
     );
   }
 }

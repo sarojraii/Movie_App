@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/view/my_list.dart';
-import 'package:movie_app/view/home_page.dart';
-import 'package:movie_app/view/profile_page.dart';
 
 class ExplorePage extends StatefulWidget {
   const ExplorePage({super.key});
@@ -121,6 +118,7 @@ class _MyComponentsState extends State<MyComponents> {
             height: 200,
             width: 150,
             decoration: BoxDecoration(
+              color: Colors.red,
               borderRadius: BorderRadius.circular(20),
               image: DecorationImage(
                 image: NetworkImage(widget.imageUrl1),
