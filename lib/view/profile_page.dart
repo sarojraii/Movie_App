@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/view/explore_page.dart';
-import 'package:movie_app/view/home_page.dart';
-import 'package:movie_app/view/my_list.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -27,7 +24,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   Text(
                     'Profile',
                     style: TextStyle(
-                        fontSize: 25,
+                        fontSize: 20,
                         fontWeight: FontWeight.w600,
                         color: Colors.white),
                   ),
@@ -35,7 +32,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             const SizedBox(
-              height: 10,
+              height: 5,
             ),
             const Center(
               child: CircleAvatar(
@@ -68,7 +65,7 @@ class _ProfilePageState extends State<ProfilePage> {
             Column(
               children: [
                 Padding(
-                  padding: EdgeInsets.all(20.0),
+                  padding: EdgeInsets.all(15.0),
                   child: Container(
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
@@ -89,7 +86,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           ),
                         ),
                         Padding(
-                          padding: EdgeInsets.all(2.0),
+                          padding: EdgeInsets.all(1.0),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -101,7 +98,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               Text(
                                 'Enjoy watching Full-HD movies. \nwithout restrictions and without ads.',
                                 style: TextStyle(
-                                    fontSize: 15, color: Colors.white),
+                                    fontSize: 12, color: Colors.white),
                               ),
                               Icon(
                                 Icons.chevron_right,
@@ -185,7 +182,7 @@ class MyProfile extends StatelessWidget {
                 child: Icon(
                   iconed,
                   color: Colors.white,
-                  size: 30,
+                  size: 25,
                 ),
               ),
               Expanded(
@@ -194,7 +191,7 @@ class MyProfile extends StatelessWidget {
                   text,
                   style: const TextStyle(
                     color: Colors.white,
-                    fontSize: 18,
+                    fontSize: 14,
                   ),
                 ),
               ),

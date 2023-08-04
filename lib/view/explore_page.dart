@@ -8,86 +8,66 @@ class ExplorePage extends StatefulWidget {
 }
 
 class _ExplorePageState extends State<ExplorePage> {
-  int index = 1;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blueGrey[900],
-      body: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: SafeArea(
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.all(12),
           child: Column(
-            children: [
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: TextFormField(
-                  keyboardType: TextInputType.name,
-                  decoration: InputDecoration(
-                    hintText: 'Search',
-                    filled: true,
-                    fillColor: Colors.white.withOpacity(0.2),
-                    prefixIcon: const Icon(Icons.search),
-                    enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                      borderSide: const BorderSide(color: Colors.grey),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.black, width: 1),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
+            children: <Widget>[
+              TextFormField(
+                keyboardType: TextInputType.name,
+                decoration: InputDecoration(
+                  hintText: 'Search',
+                  hintStyle: const TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 17),
+                  filled: true,
+                  fillColor: Colors.white.withOpacity(0.2),
+                  prefixIcon: const Icon(
+                    Icons.search,
+                    color: Colors.white,
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: const BorderSide(color: Colors.grey),
+                  ),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.black, width: 1),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                 ),
               ),
               const SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
                 child: Row(
                   children: [
-                    MyRow(
+                    GridA(
                       text: 'Action',
                     ),
-                    MyRow(
+                    GridA(
                       text: 'Adventure',
                     ),
-                    MyRow(
+                    GridA(
                       text: 'Horror',
                     ),
-                    MyRow(
+                    GridA(
                       text: 'Sci-fi',
                     ),
-                    MyRow(
+                    GridA(
                       text: 'Comedy',
                     ),
-                    MyRow(
+                    GridA(
                       text: 'Thriller',
                     ),
                   ],
                 ),
               ),
-              const MyComponents(
-                imageUrl1: 'https://wallpaperaccess.com/full/267486.jpg',
-                imageUrl2: 'https://wallpaperaccess.com/full/259316.jpg',
-              ),
-              const MyComponents(
-                imageUrl1: 'https://wallpaperaccess.com/full/267512.jpg',
-                imageUrl2: 'https://wallpaperaccess.com/full/267592.jpg',
-              ),
-              const MyComponents(
-                imageUrl1: 'https://wallpaper.dog/large/20494210.jpg',
-                imageUrl2: 'https://wallpaper.dog/large/20494129.jpg',
-              ),
-              const MyComponents(
-                imageUrl1: 'https://wallpaper.dog/large/17173541.jpg',
-                imageUrl2: 'https://wallpaperaccess.com/full/267592.jpg',
-              ),
-              const MyComponents(
-                imageUrl1: 'https://wallpaperaccess.com/full/267486.jpg',
-                imageUrl2: 'https://wallpaperaccess.com/full/259316.jpg',
-              ),
-              const MyComponents(
-                imageUrl1: 'https://wallpaper.dog/large/20494210.jpg',
-                imageUrl2: 'https://wallpaper.dog/large/20494129.jpg',
-              ),
+              Expanded(child: GridB())
             ],
           ),
         ),
@@ -96,49 +76,36 @@ class _ExplorePageState extends State<ExplorePage> {
   }
 }
 
-class MyComponents extends StatefulWidget {
-  final String imageUrl1;
-  final String imageUrl2;
-  const MyComponents(
-      {required this.imageUrl1, required this.imageUrl2, super.key});
+class GridA extends StatelessWidget {
+  final String text;
 
-  @override
-  State<MyComponents> createState() => _MyComponentsState();
-}
+  const GridA({required this.text, super.key});
 
-class _MyComponentsState extends State<MyComponents> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10.0),
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
           Container(
-            height: 200,
-            width: 150,
+            height: 30,
+            width: 90,
             decoration: BoxDecoration(
-              color: Colors.red,
               borderRadius: BorderRadius.circular(20),
-              image: DecorationImage(
-                image: NetworkImage(widget.imageUrl1),
-                fit: BoxFit.cover,
+              color: Colors.red,
+            ),
+            child: Center(
+              child: Text(
+                text,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
             ),
           ),
           const SizedBox(
-            width: 50,
-          ),
-          Container(
-            height: 200,
-            width: 150,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(20),
-              image: DecorationImage(
-                image: NetworkImage(widget.imageUrl2),
-                fit: BoxFit.cover,
-              ),
-            ),
+            width: 10,
           ),
         ],
       ),
@@ -146,42 +113,75 @@ class _MyComponentsState extends State<MyComponents> {
   }
 }
 
-class MyRow extends StatelessWidget {
-  final String text;
+class GridB extends StatefulWidget {
+  const GridB({super.key});
 
-  const MyRow({required this.text, super.key});
+  @override
+  State<GridB> createState() => _GridBState();
+}
+
+class _GridBState extends State<GridB> {
+  final List<Map<String, dynamic>> gridMap = [
+    {
+      "images": "image/captain.jpg",
+    },
+    {
+      "images": "image/gog.jpg",
+    },
+    {
+      "images": "image/fast.jpg",
+    },
+    {
+      "images": "image/panther.jpg",
+    },
+    {
+      "images": "image/captain.jpg",
+    },
+    {
+      "images": "image/gog.jpg",
+    },
+    {
+      "images": "image/fast.jpg",
+    },
+    {
+      "images": "image/panther.jpg",
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Row(
-          children: [
-            Container(
-              height: 35,
-              width: 90,
-              child: Center(
-                child: Text(
-                  text,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.red,
-              ),
-            ),
-            const SizedBox(
-              width: 10,
-            ),
-          ],
+    return GridView.builder(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 12.0,
+          mainAxisSpacing: 12.0,
+          mainAxisExtent: 240,
         ),
-      ),
-    );
+        itemCount: gridMap.length,
+        physics: BouncingScrollPhysics(),
+        itemBuilder: (_, index) {
+          return Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(16.0),
+              color: Colors.redAccent.shade100,
+            ),
+            child: ClipRRect(
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
+                bottomLeft: Radius.circular(16),
+                bottomRight: Radius.circular(16),
+              ),
+              child: Image(
+                image: AssetImage(
+                  "${gridMap.elementAt(index)['images']}",
+                ),
+                height: 190,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ),
+          );
+        });
   }
 }

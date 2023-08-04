@@ -26,20 +26,20 @@ class _MyListState extends State<MyList> {
                   Text(
                     'My List',
                     style: TextStyle(
-                        fontSize: 25,
+                        fontSize: 20,
                         fontWeight: FontWeight.w600,
                         color: Colors.white),
                   ),
                   Icon(
                     Icons.search,
-                    size: 32,
+                    size: 27,
                     color: Colors.white,
                   ),
                 ],
               ),
             ),
             const SizedBox(
-              height: 200,
+              height: 160,
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -48,12 +48,12 @@ class _MyListState extends State<MyList> {
                 child: const Icon(
                   Icons.format_list_bulleted,
                   color: Colors.white,
-                  size: 150,
+                  size: 120,
                 ),
               ),
             ),
             const SizedBox(
-              height: 25,
+              height: 10,
             ),
             Padding(
               padding: const EdgeInsets.all(10),
@@ -61,7 +61,7 @@ class _MyListState extends State<MyList> {
                   child: Text(
                 'Your list is empty',
                 style: TextStyle(
-                    fontSize: 25,
+                    fontSize: 21,
                     color: Colors.red.shade700,
                     fontWeight: FontWeight.w500),
               )),
@@ -72,16 +72,16 @@ class _MyListState extends State<MyList> {
                   child: Text(
                 'It seems that you have not added',
                 style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 15,
                     color: Colors.white,
                     fontWeight: FontWeight.w400),
               )),
             ),
             const Center(
               child: Text(
-                'any movies to the list',
+                'any movies to the list.',
                 style: TextStyle(
-                    fontSize: 20,
+                    fontSize: 15,
                     color: Colors.white,
                     fontWeight: FontWeight.w400),
               ),

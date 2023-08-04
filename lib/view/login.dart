@@ -31,7 +31,7 @@ class LoginPage extends StatelessWidget {
                 children: [
                   Text(
                     'Login',
-                    style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -39,7 +39,7 @@ class LoginPage extends StatelessWidget {
                 height: 20,
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(12.0),
                 child: TextFormField(
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
@@ -56,7 +56,7 @@ class LoginPage extends StatelessWidget {
                 ),
               ),
               Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(12.0),
                 child: TextFormField(
                   keyboardType: TextInputType.text,
                   decoration: InputDecoration(
@@ -76,7 +76,7 @@ class LoginPage extends StatelessWidget {
                 height: 25,
               ),
               Container(
-                height: 50,
+                height: 40,
                 width: 150,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(5),
@@ -85,7 +85,7 @@ class LoginPage extends StatelessWidget {
                 child: const Center(
                   child: Text(
                     'Login',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ),
               ),
@@ -123,7 +123,7 @@ class LoginPage extends StatelessWidget {
                     child: const Text(
                       'Skip',
                       style: TextStyle(
-                          fontSize: 25,
+                          fontSize: 20,
                           color: Colors.red,
                           decoration: TextDecoration.underline),
                     ),
