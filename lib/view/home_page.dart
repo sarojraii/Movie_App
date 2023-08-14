@@ -1,17 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_app/apipage/moviepage.dart';
 
-class Item {
-  final String urlImage;
+import '../model/models.dart';
 
-  Item({required this.urlImage});
-}
-
-class Itemed {
-  final String urlImages;
-
-  Itemed({required this.urlImages});
-}
+const String token =
+    "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmOGFhZTc1NjU0ODQyZTIzYmY3YWY3ZjQzZmUzYzZjMiIsInN1YiI6IjYzZWNjMjA2MWI3Mjk0MDA3YzRhMjg0ZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.23lyMgfIqLej3W_DlkWcUnd0BMjIESDGtacHVBwz8fg";
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,64 +17,41 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int index = 0;
+  List<Result>? movies = [];
 
-  // void _navigateToExplorePage() {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => ExplorePage(),
-  //     ),
-  //   );
-  // }
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
 
-  // void _navigateToMyList() {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => MyList(),
-  //     ),
-  //   );
-  // }
+  void getData() async {
+    try {
+      var response = await Dio().get(
+          'https://api.themoviedb.org/3/movie/popular?key=f8aae75654842e23bf7af7f43fe3c6c2&page=1',
+          options: Options(headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $token",
+          }));
+      if (response.statusCode == 200) {
+        final result = await parseRawData(response.data);
+        setState(() {
+          movies = result.results;
+        });
+      } else {
+        print("response.statuscode: ${response.statusCode}");
+        print(response.statusCode);
+      }
+    } catch (e) {
+      print("error---");
+      print(e);
+    }
+  }
 
-  // void _navigateToProfilePage() {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => ProfilePage(),
-  //     ),
-  //   );
-  // }
-
-  List<Item> items = [
-    Item(
-      urlImage: 'https://wallpaperaccess.com/full/259316.jpg',
-    ),
-    Item(
-      urlImage: 'https://wallpaperaccess.com/full/267486.jpg',
-    ),
-    Item(
-      urlImage: 'https://wallpaperaccess.com/full/267512.jpg',
-    ),
-    Item(
-      urlImage: 'https://wallpaperaccess.com/full/267592.jpg',
-    ),
-  ];
-
-  List<Itemed> itemed = [
-    Itemed(
-      urlImages: 'https://wallpaperaccess.com/full/267592.jpg',
-    ),
-    Itemed(
-      urlImages: 'https://wallpaperaccess.com/full/267512.jpg',
-    ),
-    Itemed(
-      urlImages: 'https://wallpaperaccess.com/full/267486.jpg',
-    ),
-    Itemed(
-      urlImages: 'https://wallpaperaccess.com/full/259316.jpg',
-    ),
-  ];
+  Future<MovieApi> parseRawData(Map<String, dynamic> apiResponse) async {
+    var result = await compute(MovieApi.fromJson, apiResponse);
+    return result;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -135,144 +108,139 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(
                 height: 10,
               ),
-              SingleChildScrollView(
-                child: Column(
+              const Padding(
+                padding: EdgeInsets.all(10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    SizedBox(
-                      height: 230,
-                      child: ListView.builder(
-                        physics: BouncingScrollPhysics(),
-                        itemCount: items.length,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) => Container(
-                          width: 140,
-                          decoration: BoxDecoration(
-                              image: DecorationImage(
-                                image: NetworkImage(items[index].urlImage),
-                                fit: BoxFit.cover,
-                              ),
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(20)),
-                          margin: const EdgeInsets.all(5),
-                        ),
-                      ),
+                    Text(
+                      'Popular',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold),
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.all(10),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            'New Release',
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          Text(
-                            'See all',
-                            style: TextStyle(
-                                fontSize: 17,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.red),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(
-                      height: 10,
-                    ),
-                    Container(
-                      child: SingleChildScrollView(
-                        child: Column(
-                          children: [
-                            SizedBox(
-                              height: 230,
-                              child: ListView.builder(
-                                physics: BouncingScrollPhysics(),
-                                itemCount: items.length,
-                                scrollDirection: Axis.horizontal,
-                                itemBuilder: (context, index) => Container(
-                                  width: 140,
-                                  decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                          image: NetworkImage(
-                                              itemed[index].urlImages),
-                                          fit: BoxFit.cover),
-                                      borderRadius: BorderRadius.circular(20)),
-                                  margin: const EdgeInsets.all(5),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
+                    Text(
+                      'See all',
+                      style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red),
                     ),
                   ],
                 ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              Column(
+                children: [
+                  SizedBox(
+                    height: 230,
+                    child: ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: movies?.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return SizedBox(
+                              height: 230,
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MoviePage(
+                                        selectedMovie: movies![index],
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => MoviePage(
+                                          selectedMovie: movies![index],
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    width: 140,
+                                    decoration: BoxDecoration(
+                                      image: DecorationImage(
+                                        image: NetworkImage(
+                                            "https://image.tmdb.org/t/p/w500/${movies?[index].posterPath ?? ''}"),
+                                        fit: BoxFit.cover,
+                                      ),
+                                      color: Colors.red,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
+                                    margin: const EdgeInsets.all(5),
+                                  ),
+                                ),
+                                // ),
+                              ));
+                        }),
+                  ),
+                ],
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              const Padding(
+                padding: EdgeInsets.all(10),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'New Release',
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      'See all',
+                      style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.red),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Column(
+                children: [
+                  SizedBox(
+                    height: 230,
+                    child: ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: movies?.length,
+                        scrollDirection: Axis.horizontal,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            width: 140,
+                            decoration: BoxDecoration(
+                                image: DecorationImage(
+                                    image: NetworkImage(
+                                        "https://image.tmdb.org/t/p/w500/${movies?[index].posterPath ?? ''}"),
+                                    fit: BoxFit.cover),
+                                borderRadius: BorderRadius.circular(20)),
+                            margin: const EdgeInsets.all(5),
+                          );
+                        }),
+                  ),
+                ],
               ),
             ],
           ),
         ),
       ),
-      // bottomNavigationBar: NavigationBarTheme(
-      //   data: NavigationBarThemeData(
-      //     indicatorColor: Colors.blue[100],
-      //     labelTextStyle: MaterialStatePropertyAll(
-      //       TextStyle(fontSize: 14),
-      //     ),
-      //   ),
-      //   child: NavigationBar(
-      //     height: 60,
-      //     backgroundColor: Colors.blueGrey[900],
-      //     selectedIndex:
-      //         index, // its value determines which tab is active and highlighted in the bottom navigation bar.
-      //     onDestinationSelected: (int newIndex) {
-      //       setState(() {
-      //         index = newIndex;
-      //       });
-      //       if (index == 1) {
-      //         Navigator.push(
-      //           context,
-      //           MaterialPageRoute(builder: (context) => ExplorePage()),
-      //         );
-      //       }
-      //       if (index == 2) {
-      //         Navigator.push(
-      //           context,
-      //           MaterialPageRoute(builder: (context) => MyList()),
-      //         );
-      //       }
-      //       if (index == 3) {
-      //         Navigator.push(
-      //           context,
-      //           MaterialPageRoute(builder: (context) => ProfilePage()),
-      //         );
-      //       }
-      //     },
-      //     destinations: const [
-      //       NavigationDestination(
-      //         icon: Icon(Icons.home),
-      //         label: 'Home',
-      //       ),
-      //       NavigationDestination(
-      //         icon: Icon(Icons.explore),
-      //         label: 'Explore',
-      //       ),
-      //       NavigationDestination(
-      //         icon: Icon(Icons.list),
-      //         label: 'My List',
-      //       ),
-      //       NavigationDestination(
-      //         icon: Icon(Icons.account_circle),
-      //         label: 'Profile',
-      //       ),
-      //     ],
-      //   ),
-      // ),
     );
   }
 }
@@ -285,6 +253,7 @@ class Stacker extends StatefulWidget {
   final String imagePath;
 
   const Stacker({
+    super.key,
     required this.text,
     required this.text2,
     required this.text3,

@@ -26,7 +26,7 @@ class _DashboardPageState extends State<DashboardPage> {
         fixedColor: Colors.blue,
         backgroundColor: Colors.blueGrey[800],
         unselectedItemColor: Colors.white,
-        items: [
+        items: const [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: "Home",

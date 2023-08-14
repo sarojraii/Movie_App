@@ -176,7 +176,6 @@ class _GridBState extends State<GridB> {
                 image: AssetImage(
                   "${gridMap.elementAt(index)['images']}",
                 ),
-                height: 190,
                 width: double.infinity,
                 fit: BoxFit.cover,
               ),

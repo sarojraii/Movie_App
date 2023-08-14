@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/view/dashboard.dart';
-import 'package:movie_app/view/home_page.dart';
-import 'package:movie_app/view/slider.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
