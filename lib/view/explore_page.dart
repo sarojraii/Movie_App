@@ -1,4 +1,10 @@
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_app/apipage/moviepage.dart';
+
+import '../model/models.dart';
+import 'home_page.dart';
 
 class ExplorePage extends StatefulWidget {
   const ExplorePage({super.key});
@@ -121,32 +127,67 @@ class GridB extends StatefulWidget {
 }
 
 class _GridBState extends State<GridB> {
-  final List<Map<String, dynamic>> gridMap = [
-    {
-      "images": "image/captain.jpg",
-    },
-    {
-      "images": "image/gog.jpg",
-    },
-    {
-      "images": "image/fast.jpg",
-    },
-    {
-      "images": "image/panther.jpg",
-    },
-    {
-      "images": "image/captain.jpg",
-    },
-    {
-      "images": "image/gog.jpg",
-    },
-    {
-      "images": "image/fast.jpg",
-    },
-    {
-      "images": "image/panther.jpg",
-    },
-  ];
+  // final List<Map<String, dynamic>> gridMap = [
+  //   {
+  //     "images": "image/captain.jpg",
+  //   },
+  //   {
+  //     "images": "image/gog.jpg",
+  //   },
+  //   {
+  //     "images": "image/fast.jpg",
+  //   },
+  //   {
+  //     "images": "image/panther.jpg",
+  //   },
+  //   {
+  //     "images": "image/captain.jpg",
+  //   },
+  //   {
+  //     "images": "image/gog.jpg",
+  //   },
+  //   {
+  //     "images": "image/fast.jpg",
+  //   },
+  //   {
+  //     "images": "image/panther.jpg",
+  //   },
+  // ];
+
+  List<Result>? explore = [];
+  @override
+  void initState() {
+    super.initState();
+    getData();
+  }
+
+  void getData() async {
+    try {
+      var response = await Dio().get(
+          'https://api.themoviedb.org/3/movie/popular?key=f8aae75654842e23bf7af7f43fe3c6c2&page=1',
+          options: Options(headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer $token",
+          }));
+      if (response.statusCode == 200) {
+        final result = await parseRawData(response.data);
+        setState(() {
+          explore = result.results;
+        });
+      } else {
+        print("response.statuscode: ${response.statusCode}");
+        print(response.statusCode);
+      }
+    } catch (e) {
+      print("error---");
+      print(e);
+    }
+  }
+
+  Future<MovieApi> parseRawData(Map<String, dynamic> apiResponse) async {
+    var result = await compute(MovieApi.fromJson, apiResponse);
+    return result;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -157,7 +198,7 @@ class _GridBState extends State<GridB> {
           mainAxisSpacing: 12.0,
           mainAxisExtent: 240,
         ),
-        itemCount: gridMap.length,
+        itemCount: explore?.length,
         physics: BouncingScrollPhysics(),
         itemBuilder: (_, index) {
           return Container(
@@ -172,12 +213,22 @@ class _GridBState extends State<GridB> {
                 bottomLeft: Radius.circular(16),
                 bottomRight: Radius.circular(16),
               ),
-              child: Image(
-                image: AssetImage(
-                  "${gridMap.elementAt(index)['images']}",
+              child: InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) =>
+                          MoviePage(selectedMovie: explore![index]),
+                    ),
+                  );
+                },
+                child: Image(
+                  image: NetworkImage(
+                      "https://image.tmdb.org/t/p/w500/${explore?[index].posterPath ?? ''}"),
+                  width: double.infinity,
+                  fit: BoxFit.cover,
                 ),
-                width: double.infinity,
-                fit: BoxFit.cover,
               ),
             ),
           );

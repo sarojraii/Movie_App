@@ -47,6 +47,25 @@ class MovieApi {
       };
 }
 
+const String tableNotes = 'notes';
+
+class NoteFields {
+  static const String adult = 'adult';
+  static const String backdropPath = 'backdropPath_';
+  static const String genreIds = 'genreIds';
+  static const String id = '_id';
+  static const String originalLanguage = 'originalLanguage';
+  static const String originalTitle = 'originalTitle';
+  static const String overview = 'overview';
+  static const String popularity = 'popularity';
+  static const String posterPath = 'posterPath';
+  static const String releaseDate = 'releaseDate';
+  static const String title = 'title';
+  static const String video = 'video';
+  static const String voteAverage = 'voteAverage';
+  static const String voteCount = 'voteCount';
+}
+
 class Result {
   bool? adult;
   String? backdropPath;

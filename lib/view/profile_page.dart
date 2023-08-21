@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -10,7 +11,23 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   int index = 3;
 
+  String emailController = '';
+  String pwController = '';
+
   @override
+  void initState() {
+    super.initState();
+    userInput();
+  }
+
+  Future<void> userInput() async {
+    SharedPreferences sp = await SharedPreferences.getInstance();
+    setState(() {
+      emailController = sp.getString('Email') ?? '';
+      pwController = sp.getString('password') ?? '';
+    });
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blueGrey[900],
@@ -44,15 +61,15 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(
               height: 9,
             ),
-            const Center(
+            Center(
               child: Text(
-                'Saroj Rai',
+                emailController,
                 style: TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),
-            const Center(
+            Center(
               child: Text(
-                'raii.saroj21@gmail.com',
+                pwController,
                 style: TextStyle(fontSize: 15, color: Colors.white),
               ),
             ),

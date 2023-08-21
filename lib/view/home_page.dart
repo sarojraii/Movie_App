@@ -155,32 +155,19 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                   );
                                 },
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => MoviePage(
-                                          selectedMovie: movies![index],
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  child: Container(
-                                    width: 140,
-                                    decoration: BoxDecoration(
-                                      image: DecorationImage(
-                                        image: NetworkImage(
-                                            "https://image.tmdb.org/t/p/w500/${movies?[index].posterPath ?? ''}"),
-                                        fit: BoxFit.cover,
-                                      ),
-                                      color: Colors.red,
-                                      borderRadius: BorderRadius.circular(20),
+                                child: Container(
+                                  width: 140,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                          "https://image.tmdb.org/t/p/w500/${movies?[index].posterPath ?? ''}"),
+                                      fit: BoxFit.cover,
                                     ),
-                                    margin: const EdgeInsets.all(5),
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(20),
                                   ),
+                                  margin: const EdgeInsets.all(5),
                                 ),
-                                // ),
                               ));
                         }),
                   ),
@@ -223,16 +210,33 @@ class _HomePageState extends State<HomePage> {
                         itemCount: movies?.length,
                         scrollDirection: Axis.horizontal,
                         itemBuilder: (context, index) {
-                          return Container(
-                            width: 140,
-                            decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: NetworkImage(
-                                        "https://image.tmdb.org/t/p/w500/${movies?[index].posterPath ?? ''}"),
-                                    fit: BoxFit.cover),
-                                borderRadius: BorderRadius.circular(20)),
-                            margin: const EdgeInsets.all(5),
-                          );
+                          return SizedBox(
+                              height: 230,
+                              child: InkWell(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => MoviePage(
+                                        selectedMovie: movies![index],
+                                      ),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  width: 140,
+                                  decoration: BoxDecoration(
+                                    image: DecorationImage(
+                                      image: NetworkImage(
+                                          "https://image.tmdb.org/t/p/w500/${movies?[index].posterPath ?? ''}"),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    color: Colors.red,
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                  margin: const EdgeInsets.all(5),
+                                ),
+                              ));
                         }),
                   ),
                 ],

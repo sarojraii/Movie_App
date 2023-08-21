@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-
+import 'package:intl/intl.dart';
 import '../model/models.dart';
 import '../view/home_page.dart';
 
@@ -125,7 +125,7 @@ class _MoviePageState extends State<MoviePage> {
             //     ),
             //   ),
             // ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Align(
@@ -150,6 +150,57 @@ class _MoviePageState extends State<MoviePage> {
                       Text(
                         widget.selectedMovie.voteAverage.toString() ?? '',
                         style: TextStyle(fontSize: 15),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Container(
+                  child: Row(
+                    children: [
+                      const Text(
+                        'Released Date :',
+                        style: TextStyle(
+                            fontSize: 15, fontWeight: FontWeight.bold),
+                      ),
+                      Text(
+                        widget.selectedMovie?.releaseDate != null
+                            ? DateFormat('yyyy-MM-dd')
+                                .format(widget.selectedMovie.releaseDate!)
+                            : 'N/A',
+                        style: const TextStyle(fontSize: 15),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Container(
+                  child: Row(
+                    children: [
+                      // Icon(
+                      //   Icons.star,
+                      //   color: Colors.yellow,
+                      // ),
+                      const Text(
+                        'Adult : ',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15),
+                      ),
+
+                      Text(
+                        widget.selectedMovie.adult == true ? 'Yes' : 'No',
+                        style: const TextStyle(fontSize: 15),
                       ),
                     ],
                   ),

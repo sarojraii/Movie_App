@@ -8,7 +8,31 @@ class MyList extends StatefulWidget {
 }
 
 class _MyListState extends State<MyList> {
-  int index = 2;
+  List<String> toDos = [];
+
+  final TextEditingController _searchController = TextEditingController();
+
+  void _addToDOItem(String toDOText) {
+    setState(() {
+      toDos.add(toDOText);
+    });
+  }
+
+  void updateItem(int index, String updatedItem) {
+    setState(() {
+      toDos[index] = updatedItem;
+    });
+  }
+
+  bool _isUpdate = false;
+  bool get isUpdate => _isUpdate;
+
+  set isUpdate(bool value) {
+    _isUpdate = value;
+    setState(() {});
+  }
+
+  var selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -16,78 +40,141 @@ class _MyListState extends State<MyList> {
       backgroundColor: Colors.blueGrey[900],
       body: SafeArea(
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
+          // crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
-              padding: EdgeInsets.all(15.0),
+              padding: const EdgeInsets.all(15.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'My List',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white),
+                  textFormField(),
+                  const SizedBox(
+                    height: 10,
                   ),
-                  Icon(
-                    Icons.search,
-                    size: 27,
-                    color: Colors.white,
-                  ),
+                  isUpdate
+                      ? Container()
+                      : InkWell(
+                          onTap: () {
+                            _searchController.text.isEmpty
+                                ? ''
+                                : _addToDOItem(_searchController.text);
+                            _searchController.clear();
+                          },
+                          child: Container(
+                            height: 60,
+                            width: 50,
+                            decoration: const BoxDecoration(
+                              color: Colors.white,
+                              // borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: const Icon(Icons.add),
+                          ),
+                        ),
                 ],
-              ),
-            ),
-            const SizedBox(
-              height: 160,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                height: 100,
-                child: const Icon(
-                  Icons.format_list_bulleted,
-                  color: Colors.white,
-                  size: 120,
-                ),
               ),
             ),
             const SizedBox(
               height: 10,
             ),
             Padding(
-              padding: const EdgeInsets.all(10),
-              child: Center(
-                  child: Text(
-                'Your list is empty',
-                style: TextStyle(
-                    fontSize: 21,
-                    color: Colors.red.shade700,
-                    fontWeight: FontWeight.w500),
-              )),
-            ),
-            const Padding(
-              padding: EdgeInsets.all(5),
-              child: Center(
-                  child: Text(
-                'It seems that you have not added',
-                style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400),
-              )),
-            ),
-            const Center(
-              child: Text(
-                'any movies to the list.',
-                style: TextStyle(
-                    fontSize: 15,
-                    color: Colors.white,
-                    fontWeight: FontWeight.w400),
+              padding: const EdgeInsets.only(right: 20, left: 20),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  isUpdate ? updateButton() : Container(),
+                  Text(
+                    'Total Item : ${toDos.length} ',
+                    style: const TextStyle(color: Colors.white),
+                  )
+                ],
               ),
+            ),
+            const SizedBox(
+              height: 10,
+            ),
+            Expanded(
+              child: ListView.builder(
+                  itemCount: toDos.length,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      height: 50,
+                      width: 100,
+                      decoration: BoxDecoration(
+                        color: Colors.amberAccent,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      margin: const EdgeInsets.all(5),
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(toDos[index]),
+                            Row(
+                              children: [
+                                IconButton(
+                                  onPressed: () {
+                                    isUpdate = true;
+                                    _searchController.text = toDos[index];
+                                    selectedIndex = index;
+                                  },
+                                  icon: const Icon(Icons.edit),
+                                ),
+                                IconButton(
+                                  onPressed: () {
+                                    toDos.removeAt(index);
+                                    setState(() {});
+                                  },
+                                  icon: const Icon(Icons.delete),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      ),
+                    );
+                  }),
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  updateButton() {
+    return ElevatedButton(
+      onPressed: () {
+        updateItem(selectedIndex, _searchController.text);
+        isUpdate = false;
+        _searchController.clear();
+      },
+      child: const Text('Update'),
+    );
+  }
+
+  Container textFormField() {
+    return Container(
+      height: 60,
+      width: 270,
+      child: TextFormField(
+        keyboardType: TextInputType.text,
+        controller: _searchController,
+        decoration: InputDecoration(
+            hintText: 'Add a new item',
+            filled: true,
+            fillColor: Colors.purple.shade100.withOpacity(0.2),
+            prefixIcon: const Icon(
+              Icons.search,
+              color: Colors.grey,
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(color: Colors.grey.shade300),
+            ),
+            focusedBorder: OutlineInputBorder(
+                borderSide: const BorderSide(color: Colors.grey),
+                borderRadius: BorderRadius.circular(10))),
       ),
     );
   }
