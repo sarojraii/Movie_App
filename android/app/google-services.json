@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "991512045518",
+    "project_id": "fir-movie-app-394e3",
+    "storage_bucket": "fir-movie-app-394e3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:991512045518:android:d83625745072a7eba9ed9f",
+        "android_client_info": {
+          "package_name": "com.example.movie_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "991512045518-iu8poju3v3ph43uqlfvaarh6k4o3g327.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZ71fXZWPajRRuvFO0PZbtgZ4aQHFL2kA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "991512045518-iu8poju3v3ph43uqlfvaarh6k4o3g327.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

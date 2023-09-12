@@ -46,6 +46,10 @@ dependencies:
   another_carousel_pro: ^1.0.0
   carousel_slider: ^4.2.1
 
+  cloud_firestore: ^4.9.1
+  firebase_core: ^2.15.1
+  firebase_auth: ^4.9.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -4,9 +4,18 @@ import 'package:movie_app/db/notes_db.dart';
 import 'package:movie_app/view/dashboard.dart';
 import 'package:movie_app/view/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:firebase_core/firebase_core.dart';
 
-void main() {
-  runApp(const MyApp());
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  if (Firebase.apps.isNotEmpty) {
+    print("Firebase is connected!");
+  } else {
+    print("Firebase is not connected.");
+  }
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -46,26 +55,28 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: AnimatedSplashScreen(
-        duration: 3000,
-        splash: Center(
-          child: Container(
-            height: 700,
-            width: 500,
-            child: Image(
-              image: NetworkImage(
-                'https://s.tmimgcdn.com/scr/800x500/77700/letter-m-logo-template_77760-2-original.jpg',
+      home: Scaffold(
+        body: AnimatedSplashScreen(
+          duration: 3000,
+          splash: Center(
+            child: Container(
+              height: 700,
+              width: 500,
+              child: Image(
+                image: NetworkImage(
+                  'https://s.tmimgcdn.com/scr/800x500/77700/letter-m-logo-template_77760-2-original.jpg',
+                ),
+                fit: BoxFit.cover,
               ),
-              fit: BoxFit.cover,
             ),
           ),
+          // nextScreen: isChecking
+          //     ? Container()
+          //     : !isLoggedIn
+          //         ? LoginPage()
+          //         : DashboardPage()
+          nextScreen: LoginPage(),
         ),
-        // nextScreen: isChecking
-        //     ? Container()
-        //     : !isLoggedIn
-        //         ? LoginPage()
-        //         : DashboardPage()
-        nextScreen: LoginPage(),
       ),
     );
   }
