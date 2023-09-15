@@ -48,11 +48,11 @@ class SplashScreenWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedSplashScreen(
       duration: 3000,
-      splash: Center(
-        child: Container(
+      splash: const Center(
+        child: SizedBox(
           height: 700,
           width: 500,
-          child: const Image(
+          child: Image(
             image: NetworkImage(
               'https://s.tmimgcdn.com/scr/800x500/77700/letter-m-logo-template_77760-2-original.jpg',
             ),
