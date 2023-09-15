@@ -27,7 +27,10 @@ class _ProviderListState extends State<ProviderList> {
                       onPressed: () {
                         provider.removeItem(provider.movie[index]);
                       },
-                      icon: const Icon(Icons.delete),
+                      icon: const Padding(
+                        padding: EdgeInsets.only(left: 150),
+                        child: Icon(Icons.delete),
+                      ),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
