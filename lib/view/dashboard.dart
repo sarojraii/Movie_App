@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/view/explore_page.dart';
 import 'package:movie_app/view/home_page.dart';
-import 'package:movie_app/view/my_list.dart';
 import 'package:movie_app/view/profile_page.dart';
+import 'package:movie_app/view/provider_list.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -12,7 +12,12 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
-  List navpages = [HomePage(), ExplorePage(), MyList(), ProfilePage()];
+  List navpages = [
+    const HomePage(),
+    const ExplorePage(),
+    const ProviderList(),
+    const ProfilePage()
+  ];
   int currentIndex = 0;
 
   @override

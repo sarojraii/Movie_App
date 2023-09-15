@@ -20,7 +20,7 @@ class _ExplorePageState extends State<ExplorePage> {
       backgroundColor: Colors.blueGrey[900],
       body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(12),
+          padding: const EdgeInsets.all(12),
           child: Column(
             children: <Widget>[
               TextFormField(
@@ -50,34 +50,45 @@ class _ExplorePageState extends State<ExplorePage> {
               const SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
                 scrollDirection: Axis.horizontal,
-                child: Row(
-                  children: [
-                    GridA(
-                      text: 'Action',
-                    ),
-                    GridA(
-                      text: 'Adventure',
-                    ),
-                    GridA(
-                      text: 'Horror',
-                    ),
-                    GridA(
-                      text: 'Sci-fi',
-                    ),
-                    GridA(
-                      text: 'Comedy',
-                    ),
-                    GridA(
-                      text: 'Thriller',
-                    ),
-                  ],
-                ),
+                child: RowWidget(),
               ),
-              Expanded(child: GridB())
+              const Expanded(child: GridB())
             ],
           ),
         ),
       ),
+    );
+  }
+}
+
+class RowWidget extends StatelessWidget {
+  const RowWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const Row(
+      children: [
+        GridA(
+          text: 'Action',
+        ),
+        GridA(
+          text: 'Adventure',
+        ),
+        GridA(
+          text: 'Horror',
+        ),
+        GridA(
+          text: 'Sci-fi',
+        ),
+        GridA(
+          text: 'Comedy',
+        ),
+        GridA(
+          text: 'Thriller',
+        ),
+      ],
     );
   }
 }
@@ -127,33 +138,6 @@ class GridB extends StatefulWidget {
 }
 
 class _GridBState extends State<GridB> {
-  // final List<Map<String, dynamic>> gridMap = [
-  //   {
-  //     "images": "image/captain.jpg",
-  //   },
-  //   {
-  //     "images": "image/gog.jpg",
-  //   },
-  //   {
-  //     "images": "image/fast.jpg",
-  //   },
-  //   {
-  //     "images": "image/panther.jpg",
-  //   },
-  //   {
-  //     "images": "image/captain.jpg",
-  //   },
-  //   {
-  //     "images": "image/gog.jpg",
-  //   },
-  //   {
-  //     "images": "image/fast.jpg",
-  //   },
-  //   {
-  //     "images": "image/panther.jpg",
-  //   },
-  // ];
-
   List<Result>? explore = [];
   @override
   void initState() {
@@ -199,7 +183,7 @@ class _GridBState extends State<GridB> {
           mainAxisExtent: 240,
         ),
         itemCount: explore?.length,
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         itemBuilder: (_, index) {
           return Container(
             decoration: BoxDecoration(

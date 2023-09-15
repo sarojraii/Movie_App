@@ -1,9 +1,8 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
-import 'package:movie_app/db/notes_db.dart';
-import 'package:movie_app/view/dashboard.dart';
+import 'package:movie_app/provider/provider.dart';
 import 'package:movie_app/view/login.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 Future main() async {
@@ -15,7 +14,7 @@ Future main() async {
     print("Firebase is not connected.");
   }
 
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -26,58 +25,42 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  // bool _isChecking = false;
-  // bool get isChecking => _isChecking;
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+      create: (_) => MovieProvider(),
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          body: SplashScreenWidget(),
+        ),
+      ),
+    );
+  }
+}
 
-  // set isChecking(bool value) {
-  //   _isChecking = value;
-  //   setState(() {});
-  // }
-
-  // bool isLoggedIn = false;
-
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-  //     isChecking = true;
-  //     await check();
-  //     isChecking = false;
-  //   });
-  // }
-
-  // Future<void> check() async {
-  //   SharedPreferences sp = await SharedPreferences.getInstance();
-  //   isLoggedIn = sp.getBool('login') ?? false;
-  // }
+class SplashScreenWidget extends StatelessWidget {
+  const SplashScreenWidget({
+    super.key,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: AnimatedSplashScreen(
-          duration: 3000,
-          splash: Center(
-            child: Container(
-              height: 700,
-              width: 500,
-              child: Image(
-                image: NetworkImage(
-                  'https://s.tmimgcdn.com/scr/800x500/77700/letter-m-logo-template_77760-2-original.jpg',
-                ),
-                fit: BoxFit.cover,
-              ),
+    return AnimatedSplashScreen(
+      duration: 3000,
+      splash: Center(
+        child: Container(
+          height: 700,
+          width: 500,
+          child: const Image(
+            image: NetworkImage(
+              'https://s.tmimgcdn.com/scr/800x500/77700/letter-m-logo-template_77760-2-original.jpg',
             ),
+            fit: BoxFit.cover,
           ),
-          // nextScreen: isChecking
-          //     ? Container()
-          //     : !isLoggedIn
-          //         ? LoginPage()
-          //         : DashboardPage()
-          nextScreen: LoginPage(),
         ),
       ),
+      nextScreen: const LoginPage(),
     );
   }
 }

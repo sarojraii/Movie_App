@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:movie_app/provider/provider.dart';
+import 'package:provider/provider.dart';
 import '../model/models.dart';
 import '../view/home_page.dart';
 
@@ -59,6 +61,7 @@ class _MoviePageState extends State<MoviePage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          actions: [ConsumerWidget(widget: widget)],
           backgroundColor: Colors.blueGrey[900],
           title: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
@@ -70,61 +73,11 @@ class _MoviePageState extends State<MoviePage> {
         ),
         body: Column(
           children: [
-            Container(
-              child: Stack(
-                children: [
-                  Container(
-                    color: Colors.blueGrey[900],
-                    height: 350,
-                    width: double.infinity,
-                    child: Image(
-                      image: NetworkImage(
-                          "https://image.tmdb.org/t/p/w500/${widget.selectedMovie.posterPath ?? ''}"),
-                      fit: BoxFit.contain,
-                    ),
-                  ),
-                  // InkWell(
-                  //   onTap: () {
-                  //     Navigator.push(
-                  //       context,
-                  //       MaterialPageRoute(
-                  //         builder: (context) => const HomePage(),
-                  //       ),
-                  //     );
-                  //   },
-                  //   child: const Padding(
-                  //     padding: EdgeInsets.all(10.0),
-                  //     child: Row(
-                  //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  //       children: [
-                  //         Icon(
-                  //           Icons.arrow_back,
-                  //           color: Colors.white,
-                  //         ),
-                  //         Icon(
-                  //           Icons.favorite_border,
-                  //           color: Colors.white,
-                  //         )
-                  //       ],
-                  //     ),
-                  //   ),
-                  // ),
-                ],
-              ),
+            Stack(
+              children: [
+                ImageWidget(widget: widget),
+              ],
             ),
-            // const Align(
-            //   alignment: Alignment.centerLeft,
-            //   child: Padding(
-            //     padding: EdgeInsets.all(10.0),
-            //     child: Text(
-            //       'Movie Title',
-            //       style: TextStyle(
-            //           fontSize: 25,
-            //           color: Colors.black,
-            //           fontWeight: FontWeight.bold),
-            //     ),
-            //   ),
-            // ),
             const SizedBox(
               height: 10,
             ),
@@ -139,16 +92,12 @@ class _MoviePageState extends State<MoviePage> {
                       color: Colors.grey),
                   child: Row(
                     children: [
-                      // Icon(
-                      //   Icons.star,
-                      //   color: Colors.yellow,
-                      // ),
                       const Icon(
                         Icons.star,
                         color: Colors.yellow,
                       ),
                       Text(
-                        widget.selectedMovie.voteAverage.toString() ?? '',
+                        widget.selectedMovie.voteAverage.toString(),
                         style: TextStyle(fontSize: 15),
                       ),
                     ],
@@ -156,7 +105,6 @@ class _MoviePageState extends State<MoviePage> {
                 ),
               ),
             ),
-
             Align(
               alignment: Alignment.centerLeft,
               child: Padding(
@@ -170,7 +118,7 @@ class _MoviePageState extends State<MoviePage> {
                             fontSize: 15, fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        widget.selectedMovie?.releaseDate != null
+                        widget.selectedMovie.releaseDate != null
                             ? DateFormat('yyyy-MM-dd')
                                 .format(widget.selectedMovie.releaseDate!)
                             : 'N/A',
@@ -188,16 +136,11 @@ class _MoviePageState extends State<MoviePage> {
                 child: Container(
                   child: Row(
                     children: [
-                      // Icon(
-                      //   Icons.star,
-                      //   color: Colors.yellow,
-                      // ),
                       const Text(
                         'Adult : ',
                         style: TextStyle(
                             fontWeight: FontWeight.bold, fontSize: 15),
                       ),
-
                       Text(
                         widget.selectedMovie.adult == true ? 'Yes' : 'No',
                         style: const TextStyle(fontSize: 15),
@@ -217,22 +160,89 @@ class _MoviePageState extends State<MoviePage> {
             const SizedBox(
               height: 10,
             ),
-            Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Container(
-                    width: double.infinity,
-                    child: Text(
-                      widget.selectedMovie.overview ?? '',
-                      textAlign: TextAlign.justify,
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            StoryDescriptionWidget(widget: widget),
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class ConsumerWidget extends StatelessWidget {
+  const ConsumerWidget({
+    super.key,
+    required this.widget,
+  });
+
+  final MoviePage widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(right: 20),
+      child: Consumer<MovieProvider>(
+        builder: (context, provider, child) {
+          return IconButton(
+            onPressed: () {
+              provider.addItem(widget.selectedMovie);
+            },
+            icon: child ?? const SizedBox(),
+          );
+        },
+        child: const Icon(
+          Icons.add_circle_outlined,
+          size: 30,
+        ),
+      ),
+    );
+  }
+}
+
+class ImageWidget extends StatelessWidget {
+  const ImageWidget({
+    super.key,
+    required this.widget,
+  });
+
+  final MoviePage widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.blueGrey[900],
+      height: 350,
+      width: double.infinity,
+      child: Image(
+        image: NetworkImage(
+            "https://image.tmdb.org/t/p/w500/${widget.selectedMovie.posterPath ?? ''}"),
+        fit: BoxFit.contain,
+      ),
+    );
+  }
+}
+
+class StoryDescriptionWidget extends StatelessWidget {
+  const StoryDescriptionWidget({
+    super.key,
+    required this.widget,
+  });
+
+  final MoviePage widget;
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Container(
+            width: double.infinity,
+            child: Text(
+              widget.selectedMovie.overview ?? '',
+              textAlign: TextAlign.justify,
+            ),
+          ),
         ),
       ),
     );

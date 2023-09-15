@@ -1,8 +1,6 @@
-// To parse this JSON data, do
-//
-//     final movieApi = movieApiFromJson(jsonString);
-
 import 'dart:convert';
+
+import 'package:flutter/foundation.dart';
 
 MovieApi movieApiFromJson(String str) => MovieApi.fromJson(json.decode(str));
 
@@ -45,6 +43,24 @@ class MovieApi {
         "total_pages": totalPages,
         "total_results": totalResults,
       };
+
+  @override
+  bool operator ==(covariant MovieApi other) {
+    if (identical(this, other)) return true;
+
+    return other.page == page &&
+        listEquals(other.results, results) &&
+        other.totalPages == totalPages &&
+        other.totalResults == totalResults;
+  }
+
+  @override
+  int get hashCode {
+    return page.hashCode ^
+        results.hashCode ^
+        totalPages.hashCode ^
+        totalResults.hashCode;
+  }
 }
 
 const String tableNotes = 'notes';
@@ -140,4 +156,42 @@ class Result {
         "vote_average": voteAverage,
         "vote_count": voteCount,
       };
+
+  @override
+  bool operator ==(covariant Result other) {
+    if (identical(this, other)) return true;
+
+    return other.adult == adult &&
+        other.backdropPath == backdropPath &&
+        listEquals(other.genreIds, genreIds) &&
+        other.id == id &&
+        other.originalLanguage == originalLanguage &&
+        other.originalTitle == originalTitle &&
+        other.overview == overview &&
+        other.popularity == popularity &&
+        other.posterPath == posterPath &&
+        other.releaseDate == releaseDate &&
+        other.title == title &&
+        other.video == video &&
+        other.voteAverage == voteAverage &&
+        other.voteCount == voteCount;
+  }
+
+  @override
+  int get hashCode {
+    return adult.hashCode ^
+        backdropPath.hashCode ^
+        genreIds.hashCode ^
+        id.hashCode ^
+        originalLanguage.hashCode ^
+        originalTitle.hashCode ^
+        overview.hashCode ^
+        popularity.hashCode ^
+        posterPath.hashCode ^
+        releaseDate.hashCode ^
+        title.hashCode ^
+        video.hashCode ^
+        voteAverage.hashCode ^
+        voteCount.hashCode;
+  }
 }

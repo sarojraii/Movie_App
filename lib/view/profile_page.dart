@@ -64,108 +64,128 @@ class _ProfilePageState extends State<ProfilePage> {
             Center(
               child: Text(
                 emailController,
-                style: TextStyle(fontSize: 20, color: Colors.white),
+                style: const TextStyle(fontSize: 20, color: Colors.white),
               ),
             ),
             Center(
               child: Text(
                 pwController,
-                style: TextStyle(fontSize: 15, color: Colors.white),
+                style: const TextStyle(fontSize: 15, color: Colors.white),
               ),
             ),
             const SizedBox(
               height: 10,
             ),
-            Column(
-              children: [
-                Padding(
-                  padding: EdgeInsets.all(15.0),
-                  child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                        color: Colors.blueGrey[900],
-                        border:
-                            Border.all(color: Colors.red.shade700, width: 3)),
-                    height: 100,
-                    child: const Column(
-                      children: [
-                        Center(
-                          child: Text(
-                            'Join Premium',
-                            style: TextStyle(
-                              color: Colors.red,
-                              fontSize: 20,
-                              fontWeight: FontWeight.w600,
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(1.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Icon(
-                                Icons.workspace_premium,
-                                size: 50,
-                                color: Colors.red,
-                              ),
-                              Text(
-                                'Enjoy watching Full-HD movies. \nwithout restrictions and without ads.',
-                                style: TextStyle(
-                                    fontSize: 12, color: Colors.white),
-                              ),
-                              Icon(
-                                Icons.chevron_right,
-                                color: Colors.red,
-                                size: 40,
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                )
-              ],
-            ),
-            const SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                children: [
-                  MyProfile(
-                    iconed: Icons.person,
-                    text: 'Edit Profile',
-                  ),
-                  Column(
-                    children: [
-                      MyProfile(
-                        iconed: Icons.notifications,
-                        text: 'Notification',
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      MyProfile(
-                        iconed: Icons.downloading_outlined,
-                        text: 'Download',
-                      ),
-                    ],
-                  ),
-                  Column(
-                    children: [
-                      MyProfile(
-                        iconed: Icons.security,
-                        text: 'Security',
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+            const PremiumPackageWidget(),
+            const UserInfoWidget(),
           ],
         ),
       ),
+    );
+  }
+}
+
+class UserInfoWidget extends StatelessWidget {
+  const UserInfoWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return const SingleChildScrollView(
+      scrollDirection: Axis.vertical,
+      child: Column(
+        children: [
+          MyProfile(
+            iconed: Icons.person,
+            text: 'Edit Profile',
+          ),
+          Column(
+            children: [
+              MyProfile(
+                iconed: Icons.notifications,
+                text: 'Notification',
+              ),
+            ],
+          ),
+          Column(
+            children: [
+              MyProfile(
+                iconed: Icons.downloading_outlined,
+                text: 'Download',
+              ),
+            ],
+          ),
+          Column(
+            children: [
+              MyProfile(
+                iconed: Icons.security,
+                text: 'Security',
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class PremiumPackageWidget extends StatelessWidget {
+  const PremiumPackageWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Padding(
+          padding: EdgeInsets.all(15.0),
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: Colors.blueGrey[900],
+                border: Border.all(color: Colors.red.shade700, width: 3)),
+            height: 100,
+            child: const Column(
+              children: [
+                Center(
+                  child: Text(
+                    'Join Premium',
+                    style: TextStyle(
+                      color: Colors.red,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(1.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Icon(
+                        Icons.workspace_premium,
+                        size: 50,
+                        color: Colors.red,
+                      ),
+                      Text(
+                        'Enjoy watching Full-HD movies. \nwithout restrictions and without ads.',
+                        style: TextStyle(fontSize: 12, color: Colors.white),
+                      ),
+                      Icon(
+                        Icons.chevron_right,
+                        color: Colors.red,
+                        size: 40,
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+        )
+      ],
     );
   }
 }
@@ -181,7 +201,7 @@ class MyProfile extends StatelessWidget {
     return SingleChildScrollView(
       scrollDirection: Axis.vertical,
       child: Padding(
-        padding: EdgeInsets.all(5.0),
+        padding: const EdgeInsets.all(5.0),
         child: Container(
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),

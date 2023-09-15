@@ -1,11 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/view/dashboard.dart';
-import 'package:movie_app/view/home_page.dart';
-import 'package:movie_app/view/profile_page.dart';
 import 'package:movie_app/view/register_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:movie_app/db/simple_preference.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -38,24 +34,6 @@ class _LoginPageState extends State<LoginPage> {
     _hidden = value;
   }
 
-  // void initState() {
-  //   super.initState();
-  //   check();
-  // }
-
-  // Future<void> check() async {
-  //   SharedPreferences sp = await SharedPreferences.getInstance();
-  //   bool isLoggedIn = sp.getBool('login') ?? false;
-  //   if (isLoggedIn) {
-  //     Navigator.push(
-  //       context,
-  //       MaterialPageRoute(
-  //         builder: (context) => DashboardPage(),
-  //       ),
-  //     );
-  //   }
-  //
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,17 +44,10 @@ class _LoginPageState extends State<LoginPage> {
             padding: const EdgeInsets.all(12.0),
             child: Column(
               children: [
-                Column(
+                const Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
-                    Container(
-                      height: 200,
-                      child: const Image(
-                        height: 150,
-                        image: NetworkImage(
-                            'https://s.tmimgcdn.com/scr/800x500/77700/letter-m-logo-template_77760-2-original.jpg'),
-                      ),
-                    ),
+                    LogoWidget(),
                   ],
                 ),
                 const Column(
@@ -91,25 +62,10 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(
                   height: 20,
                 ),
-                MyField(
-                  formkey: _emailField,
-                  hintText: 'Email',
-                  suffixIcon: null,
-                  textEditingController: emailController,
-                  obscureText: !hidden,
-                  validators: (value) {
-                    RegExp regex = RegExp(
-                        r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
-
-                    if (value == null || value.isEmpty) {
-                      return 'please fill the Email';
-                    }
-                    if (!regex.hasMatch(value)) {
-                      return 'Invalid Email';
-                    }
-                    return null;
-                  },
-                ),
+                EmailFieldWidget(
+                    emailField: _emailField,
+                    emailController: emailController,
+                    hidden: hidden),
                 const SizedBox(
                   height: 10,
                 ),
@@ -125,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                         ? const Icon(Icons.visibility)
                         : const Icon(Icons.visibility_off_rounded),
                   ),
-                  obscureText: _isHidden,
+                  obscureText: isHidden,
                   validators: (value) {
                     RegExp validPass = RegExp(
                         r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
@@ -141,157 +97,16 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(
                   height: 25,
                 ),
-                // InkWell(
-                //   onTap: () async {
-                //     if (emailController.text.isEmpty ||
-                //         pwController.text.isEmpty) {
-                //       showDialog(
-                //         context: context,
-                //         builder: (BuildContext context) {
-                //           return AlertDialog(
-                //             title: const Text('Form Incomplete'),
-                // content: const Text(
-                //     'Please fill in both email and password.'),
-                //             actions: <Widget>[
-                //               TextButton(
-                //                 child: const Text('OK'),
-                //                 onPressed: () {
-                //                   Navigator.of(context).pop();
-                //                 },
-                //               ),
-                //             ],
-                //           );
-                //         },
-                //       );
-                //     } else {
-                //       // final SharedPreferences sp =
-                //       //     await SharedPreferences.getInstance();
-                //       // sp.setString('Email', emailController.text);
-                //       // sp.setString('password', pwController.text);
-
-                //       // Navigator.push(
-                //       //   context,
-                //       //   MaterialPageRoute(
-                //       //     builder: (context) => DashboardPage(),
-                //       //   ),
-                //       // );
-                //       FirebaseAuth.instance.createUserWithEmailAndPassword(
-                //           email: emailController.text,
-                //           password: pwController.text);
-                //     }
-                //   },
-                //   child: Container(
-                //     height: 40,
-                //     width: 150,
-                //     decoration: BoxDecoration(
-                //       borderRadius: BorderRadius.circular(5),
-                //       color: Colors.purple.shade200,
-                //     ),
-                //     child: const Center(
-                //       child: Text(
-                //         'Login',
-                //         style:
-                //             TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                //       ),
-                //     ),
-                //   ),
-                // ),
-                InkWell(
-                  onTap: () async {
-                    if (_emailField.currentState!.validate() &&
-                        _passwordField.currentState!.validate()) {
-                      // Navigator.push(context,
-                      //     MaterialPageRoute(builder: (context) => HomePage()));
-                      try {
-                        final credential = await FirebaseAuth.instance
-                            .signInWithEmailAndPassword(
-                                email: emailController.text,
-                                password: pwController.text);
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => HomePage(),
-                          ),
-                        );
-                      } on FirebaseAuthException catch (e) {
-                        String? errorMessage;
-                        switch (e.code) {
-                          case 'user-not-found':
-                            errorMessage =
-                                "Your email address is not registered.";
-                            break;
-                          case 'wrong-password':
-                            errorMessage = "your password is incorrect";
-                            break;
-                          case 'too-many-requests':
-                            errorMessage =
-                                'Too many attempt. Please try again later.';
-                          default:
-                            errorMessage = "An undefined Error happened.";
-                        }
-
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: Text(errorMessage!),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: const Text('OK'),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      }
-                    }
-                  },
-                  child: Container(
-                    height: 40,
-                    width: 150,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(5),
-                      color: Colors.purple.shade200,
-                    ),
-                    child: const Center(
-                      child: Text(
-                        'Login',
-                        style: TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                ),
-
+                ErrorCheckWidget(
+                    emailField: _emailField,
+                    passwordField: _passwordField,
+                    emailController: emailController,
+                    pwController: pwController),
                 const SizedBox(
                   height: 10,
                 ),
-                Center(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text('Dont have an account?'),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => RegisterPage(),
-                              ));
-                        },
-                        child: const Text(
-                          'Click here',
-                          style: TextStyle(color: Colors.red),
-                        ),
-                      ),
-                    ],
-                  ),
+                const Center(
+                  child: RegisterPageWidget(),
                 ),
                 const SizedBox(
                   height: 30,
@@ -301,6 +116,187 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class LogoWidget extends StatelessWidget {
+  const LogoWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 200,
+      child: const Image(
+        height: 150,
+        image: NetworkImage(
+            'https://s.tmimgcdn.com/scr/800x500/77700/letter-m-logo-template_77760-2-original.jpg'),
+      ),
+    );
+  }
+}
+
+class EmailFieldWidget extends StatelessWidget {
+  const EmailFieldWidget({
+    super.key,
+    required GlobalKey<FormFieldState> emailField,
+    required this.emailController,
+    required this.hidden,
+  }) : _emailField = emailField;
+
+  final GlobalKey<FormFieldState> _emailField;
+  final TextEditingController emailController;
+  final bool hidden;
+
+  @override
+  Widget build(BuildContext context) {
+    return MyField(
+      formkey: _emailField,
+      hintText: 'Email',
+      suffixIcon: null,
+      textEditingController: emailController,
+      obscureText: !hidden,
+      validators: (value) {
+        RegExp regex = RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+
+        if (value == null || value.isEmpty) {
+          return 'please fill the Email';
+        }
+        if (!regex.hasMatch(value)) {
+          return 'Invalid Email';
+        }
+        return null;
+      },
+    );
+  }
+}
+
+class ErrorCheckWidget extends StatelessWidget {
+  const ErrorCheckWidget({
+    super.key,
+    required GlobalKey<FormFieldState> emailField,
+    required GlobalKey<FormFieldState> passwordField,
+    required this.emailController,
+    required this.pwController,
+  })  : _emailField = emailField,
+        _passwordField = passwordField;
+
+  final GlobalKey<FormFieldState> _emailField;
+  final GlobalKey<FormFieldState> _passwordField;
+  final TextEditingController emailController;
+  final TextEditingController pwController;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      onTap: () async {
+        bool isEmailVerified = _emailField.currentState!.validate();
+        bool isPwVerified = _passwordField.currentState!.validate();
+        if (isEmailVerified && isPwVerified) {
+          try {
+            final credential = await FirebaseAuth.instance
+                .signInWithEmailAndPassword(
+                    email: emailController.text, password: pwController.text);
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => DashboardPage(),
+              ),
+            );
+          } on FirebaseAuthException catch (e) {
+            String? errorMessage;
+            switch (e.code) {
+              case 'user-not-found':
+                errorMessage = "Your email address is not registered.";
+                break;
+              case 'wrong-password':
+                errorMessage = "Your password is incorrect.";
+                break;
+              case 'too-many-requests':
+                errorMessage = 'Too many attempt. Please try again later.';
+              default:
+                errorMessage = "An undefined Error happened.";
+            }
+
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title: Text(errorMessage!),
+                  actions: <Widget>[
+                    TextButton(
+                      child: const Text('OK'),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ],
+                );
+              },
+            );
+          }
+        }
+      },
+      child: const ButtonWidget(),
+    );
+  }
+}
+
+class ButtonWidget extends StatelessWidget {
+  const ButtonWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 40,
+      width: 150,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(5),
+        color: Colors.purple.shade200,
+      ),
+      child: const Center(
+        child: Text(
+          'Login',
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+      ),
+    );
+  }
+}
+
+class RegisterPageWidget extends StatelessWidget {
+  const RegisterPageWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text('Dont have an account?'),
+        const SizedBox(
+          width: 5,
+        ),
+        InkWell(
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const RegisterPage(),
+                ));
+          },
+          child: const Text(
+            'Click here',
+            style: TextStyle(color: Colors.red),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -356,7 +352,7 @@ class _MyFieldState extends State<MyField> {
                     hintText: widget.hintText,
                     filled: true,
                     fillColor: Colors.grey.withOpacity(0.2),
-                    prefixIcon: Icon(Icons.email),
+                    prefixIcon: const Icon(Icons.email),
                     suffixIcon: widget.suffixIcon,
                     enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey.shade300),
@@ -377,7 +373,6 @@ class _MyFieldState extends State<MyField> {
     if (formFieldState.hasError) {
       return Container(
         height: 20,
-        // color: Colors.blue,
         width: double.infinity,
         padding: const EdgeInsets.only(top: 5),
         child: Text(

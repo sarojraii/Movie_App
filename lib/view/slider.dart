@@ -11,21 +11,32 @@ class MySlider extends StatefulWidget {
 class _MySliderState extends State<MySlider> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Column(
-        children: [
-          SizedBox(
-            height: 250,
-            child: AnotherCarousel(
-              images: const [
-                AssetImage('view/asset/cm.jpg'),
-                AssetImage('view/asset/gog.jpg'),
-                AssetImage('view/asset/captain.jpg'),
-              ],
-            ),
+    return const Scaffold(
+      body: SliderWidget(),
+    );
+  }
+}
+
+class SliderWidget extends StatelessWidget {
+  const SliderWidget({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 250,
+          child: AnotherCarousel(
+            images: const [
+              AssetImage('view/asset/cm.jpg'),
+              AssetImage('view/asset/gog.jpg'),
+              AssetImage('view/asset/captain.jpg'),
+            ],
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
