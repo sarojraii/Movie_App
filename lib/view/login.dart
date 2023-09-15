@@ -197,13 +197,13 @@ class ErrorCheckWidget extends StatelessWidget {
         bool isPwVerified = _passwordField.currentState!.validate();
         if (isEmailVerified && isPwVerified) {
           try {
-            final credential = await FirebaseAuth.instance
-                .signInWithEmailAndPassword(
-                    email: emailController.text, password: pwController.text);
+            await FirebaseAuth.instance.signInWithEmailAndPassword(
+                email: emailController.text, password: pwController.text);
+            // ignore: use_build_context_synchronously
             Navigator.pushReplacement(
               context,
               MaterialPageRoute(
-                builder: (context) => DashboardPage(),
+                builder: (context) => const DashboardPage(),
               ),
             );
           } on FirebaseAuthException catch (e) {
