@@ -5,7 +5,7 @@ import 'package:intl/intl.dart';
 import 'package:movie_app/provider/provider.dart';
 import 'package:provider/provider.dart';
 import '../model/models.dart';
-import '../view/home_page.dart';
+import '../mobilepage/mobile_homepage.dart';
 
 const String links =
     "https://api.themoviedb.org/3/movie/popular?key=f8aae75654842e23bf7af7f43fe3c6c2&page=1";

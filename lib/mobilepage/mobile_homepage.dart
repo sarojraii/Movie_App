@@ -8,14 +8,14 @@ import '../model/models.dart';
 const String token =
     "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJmOGFhZTc1NjU0ODQyZTIzYmY3YWY3ZjQzZmUzYzZjMiIsInN1YiI6IjYzZWNjMjA2MWI3Mjk0MDA3YzRhMjg0ZSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.23lyMgfIqLej3W_DlkWcUnd0BMjIESDGtacHVBwz8fg";
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class MobileHomePage extends StatefulWidget {
+  const MobileHomePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<MobileHomePage> createState() => _MobileHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _MobileHomePageState extends State<MobileHomePage> {
   List<Result>? movies = [];
 
   @override

@@ -1,17 +1,32 @@
 import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/provider/provider.dart';
 import 'package:movie_app/view/login.dart';
+
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 Future main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
-  if (Firebase.apps.isNotEmpty) {
-    print("Firebase is connected!");
-  } else {
-    print("Firebase is not connected.");
+  await Firebase.initializeApp(
+    options: kIsWeb
+        ? const FirebaseOptions(
+            apiKey: "AIzaSyDqhe-4Wv51xtN1w3i-tiN8vgTikvTzoTw",
+            projectId: "web-app-5780c",
+            messagingSenderId: "864158121509",
+            appId: "1:864158121509:web:61c485aa741e388f58c9cc")
+        : null,
+  );
+
+  Future main() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
+    if (Firebase.apps.isNotEmpty) {
+      print("flutter is connected");
+    } else {
+      print('Not connected');
+    }
   }
 
   runApp(const MyApp());
@@ -37,6 +52,11 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
+
+  // const MaterialApp(
+  //   debugShowCheckedModeBanner: false,
+  //   home: HomePage(),
+  // );
 }
 
 class SplashScreenWidget extends StatelessWidget {

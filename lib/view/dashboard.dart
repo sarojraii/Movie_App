@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/view/explore_page.dart';
-import 'package:movie_app/view/home_page.dart';
 import 'package:movie_app/view/profile_page.dart';
 import 'package:movie_app/view/provider_list.dart';
+
+import 'homepage.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});

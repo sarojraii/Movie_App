@@ -32,6 +32,26 @@
   <title>movie_app</title>
   <link rel="manifest" href="manifest.json">
 
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.4.0/firebase-app.js";
+    // TODO: Add SDKs for Firebase products that you want to use
+    // https://firebase.google.com/docs/web/setup#available-libraries
+  
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyDqhe-4Wv51xtN1w3i-tiN8vgTikvTzoTw",
+      authDomain: "web-app-5780c.firebaseapp.com",
+      projectId: "web-app-5780c",
+      storageBucket: "web-app-5780c.appspot.com",
+      messagingSenderId: "864158121509",
+      appId: "1:864158121509:web:61c485aa741e388f58c9cc"
+    };
+  
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+  </script>
+
   <script>
     // The value below is injected by flutter build, do not touch.
     var serviceWorkerVersion = null;

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/apipage/moviepage.dart';
 
 import '../model/models.dart';
-import 'home_page.dart';
+import '../mobilepage/mobile_homepage.dart';
 
 class ExplorePage extends StatefulWidget {
   const ExplorePage({super.key});
