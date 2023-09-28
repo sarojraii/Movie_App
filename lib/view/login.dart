@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/mobilepage/mobile.dart';
 import 'package:movie_app/responsive/responsive.dart';
-
 import 'package:movie_app/webpage/web.dart';
-
-import '../mobilepage/mobile.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});

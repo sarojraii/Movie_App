@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../model/models.dart';
-
 class MyList extends StatefulWidget {
   const MyList({super.key});
 
@@ -36,14 +34,13 @@ class _MyListState extends State<MyList> {
 
   var selectedIndex = 0;
 
-  List<Result> movies = [];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blueGrey[900],
       body: SafeArea(
         child: Column(
+          // crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
               padding: const EdgeInsets.all(15.0),
@@ -68,6 +65,7 @@ class _MyListState extends State<MyList> {
                             width: 50,
                             decoration: const BoxDecoration(
                               color: Colors.white,
+                              // borderRadius: BorderRadius.circular(10),
                             ),
                             child: const Icon(Icons.add),
                           ),
@@ -100,7 +98,7 @@ class _MyListState extends State<MyList> {
                   itemCount: toDos.length,
                   itemBuilder: (context, index) {
                     return Container(
-                      height: 240,
+                      height: 50,
                       width: 100,
                       decoration: BoxDecoration(
                         color: Colors.amberAccent,
@@ -109,43 +107,29 @@ class _MyListState extends State<MyList> {
                       margin: const EdgeInsets.all(5),
                       child: Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Column(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Padding(
-                              padding: EdgeInsets.only(left: 300),
-                              child: Column(
-                                children: [
-                                  Icon(Icons.delete),
-                                ],
-                              ),
-                            ),
+                            Text(toDos[index]),
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                SingleChildScrollView(
-                                  child: Container(
-                                    height: 200,
-                                    width: 150,
-                                    decoration: BoxDecoration(
-                                      color: Colors.red,
-                                      borderRadius: BorderRadius.circular(12),
-                                      image: DecorationImage(
-                                        image: NetworkImage(
-                                            "https://image.tmdb.org/t/p/w500/${movies[index].posterPath ?? ''}"),
-                                        fit: BoxFit.cover,
-                                      ),
-                                    ),
-                                  ),
+                                IconButton(
+                                  onPressed: () {
+                                    isUpdate = true;
+                                    _searchController.text = toDos[index];
+                                    selectedIndex = index;
+                                  },
+                                  icon: const Icon(Icons.edit),
                                 ),
-                                const SizedBox(
-                                  width: 10,
-                                ),
-                                const Expanded(
-                                  child: Text(
-                                      'Firebase is an app development platform that helps you build and grow apps and games users love. Backed by Google and trusted by millions of businesses around the world.'),
+                                IconButton(
+                                  onPressed: () {
+                                    toDos.removeAt(index);
+                                    setState(() {});
+                                  },
+                                  icon: const Icon(Icons.delete),
                                 ),
                               ],
-                            ),
+                            )
                           ],
                         ),
                       ),

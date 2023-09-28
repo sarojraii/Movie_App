@@ -1,9 +1,11 @@
+import 'package:ad_package/ad_package.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/view/explore_page.dart';
 import 'package:movie_app/view/profile_page.dart';
-import 'package:movie_app/view/provider_list.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'homepage.dart';
+import 'my_list.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});
@@ -13,10 +15,43 @@ class DashboardPage extends StatefulWidget {
 }
 
 class _DashboardPageState extends State<DashboardPage> {
+  void initState() {
+    showAd();
+    super.initState();
+  }
+
+  callBack() {
+    Navigator.pop(context);
+  }
+
+  showAd() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+      var adShown = prefs.getBool('adShown');
+      if (adShown ?? false) {
+      } else {
+        if (context.mounted) {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return Ads(
+                // type:adType.alert
+                okButtonpressed: () {
+                  prefs.setBool('adShown', true);
+                },
+                adType: AdType.movieAd,
+              );
+            },
+          );
+        }
+      }
+    });
+  }
+
   List navpages = [
     const HomePage(),
     const ExplorePage(),
-    const ProviderList(),
+    const MyList(),
     const ProfilePage()
   ];
   int currentIndex = 0;

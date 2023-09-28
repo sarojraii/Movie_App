@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/mobilepage/mobile_homepage.dart';
-
 import '../responsive/responsive.dart';
 import '../webpage/web-homepage.dart';
 

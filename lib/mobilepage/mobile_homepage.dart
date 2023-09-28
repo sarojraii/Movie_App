@@ -221,11 +221,16 @@ class ImageWidget extends StatelessWidget {
   }
 }
 
-class TextWidget extends StatelessWidget {
+class TextWidget extends StatefulWidget {
   const TextWidget({
     super.key,
   });
 
+  @override
+  State<TextWidget> createState() => _TextWidgetState();
+}
+
+class _TextWidgetState extends State<TextWidget> {
   @override
   Widget build(BuildContext context) {
     return const Padding(
@@ -233,12 +238,26 @@ class TextWidget extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
+          // InkWell(
+          //   onTap: () async {
+          //     final SharedPreferences prefs =
+          //         await SharedPreferences.getInstance();
+
+          //     prefs.setBool('adShown', false);
+          //   },
+          //   child: Container(
+          //     height: 20,
+          //     width: 30,
+          //     color: Colors.red,
+          //     child: const Center(child: Icon(Icons.add)),
+          //   ),
+          // ),
+          const Text(
             'Popular',
             style: TextStyle(
                 color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold),
           ),
-          Text(
+          const Text(
             'See all',
             style: TextStyle(
                 fontSize: 17, fontWeight: FontWeight.bold, color: Colors.red),
