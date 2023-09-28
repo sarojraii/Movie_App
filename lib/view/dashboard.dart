@@ -2,6 +2,7 @@ import 'package:ad_package/ad_package.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/view/explore_page.dart';
 import 'package:movie_app/view/profile_page.dart';
+import 'package:movie_app/view/provider_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'homepage.dart';
@@ -35,7 +36,6 @@ class _DashboardPageState extends State<DashboardPage> {
             context: context,
             builder: (context) {
               return Ads(
-                // type:adType.alert
                 okButtonpressed: () {
                   prefs.setBool('adShown', true);
                 },
@@ -51,7 +51,7 @@ class _DashboardPageState extends State<DashboardPage> {
   List navpages = [
     const HomePage(),
     const ExplorePage(),
-    const MyList(),
+    const ProviderList(),
     const ProfilePage()
   ];
   int currentIndex = 0;
