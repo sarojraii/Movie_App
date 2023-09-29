@@ -42,7 +42,7 @@ class _ExplorePageState extends State<ExplorePage> {
                     borderSide: const BorderSide(color: Colors.grey),
                   ),
                   focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.black, width: 1),
+                    borderSide: const BorderSide(color: Colors.black, width: 1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                 ),

@@ -86,7 +86,7 @@ class _WebHomePageState extends State<WebHomePage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => HomePage()));
+                                  builder: (context) => const HomePage()));
                         },
                         child: const Row(
                           children: [
@@ -119,7 +119,7 @@ class _WebHomePageState extends State<WebHomePage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ExplorePage()));
+                                  builder: (context) => const ExplorePage()));
                         },
                         child: const Row(
                           children: [
@@ -152,7 +152,7 @@ class _WebHomePageState extends State<WebHomePage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                  builder: (context) => ProviderList()));
+                                  builder: (context) => const ProviderList()));
                         },
                         child: const Row(
                           children: [
@@ -569,7 +569,7 @@ class PremiumPackageWidget extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.all(15.0),
+          padding: const EdgeInsets.all(15.0),
           child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),

@@ -42,12 +42,20 @@ class _MoviePageState extends State<MoviePage> {
           details = result.results;
         });
       } else {
-        print("response.statuscode: ${response.statusCode}");
-        print(response.statusCode);
+        if (kDebugMode) {
+          print("response.statuscode: ${response.statusCode}");
+        }
+        if (kDebugMode) {
+          print(response.statusCode);
+        }
       }
     } catch (e) {
-      print("error---");
-      print(e);
+      if (kDebugMode) {
+        print("error---");
+      }
+      if (kDebugMode) {
+        print(e);
+      }
     }
   }
 
@@ -98,30 +106,6 @@ class _MoviePageState extends State<MoviePage> {
                       ),
                       Text(
                         widget.selectedMovie.voteAverage.toString(),
-                        style: TextStyle(fontSize: 15),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Container(
-                  child: Row(
-                    children: [
-                      const Text(
-                        'Released Date :',
-                        style: TextStyle(
-                            fontSize: 15, fontWeight: FontWeight.bold),
-                      ),
-                      Text(
-                        widget.selectedMovie.releaseDate != null
-                            ? DateFormat('yyyy-MM-dd')
-                                .format(widget.selectedMovie.releaseDate!)
-                            : 'N/A',
                         style: const TextStyle(fontSize: 15),
                       ),
                     ],
@@ -133,20 +117,40 @@ class _MoviePageState extends State<MoviePage> {
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Container(
-                  child: Row(
-                    children: [
-                      const Text(
-                        'Adult : ',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15),
-                      ),
-                      Text(
-                        widget.selectedMovie.adult == true ? 'Yes' : 'No',
-                        style: const TextStyle(fontSize: 15),
-                      ),
-                    ],
-                  ),
+                child: Row(
+                  children: [
+                    const Text(
+                      'Released Date :',
+                      style:
+                          TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      widget.selectedMovie.releaseDate != null
+                          ? DateFormat('yyyy-MM-dd')
+                              .format(widget.selectedMovie.releaseDate!)
+                          : 'N/A',
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Row(
+                  children: [
+                    const Text(
+                      'Adult : ',
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                    ),
+                    Text(
+                      widget.selectedMovie.adult == true ? 'Yes' : 'No',
+                      style: const TextStyle(fontSize: 15),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -236,7 +240,7 @@ class StoryDescriptionWidget extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: Align(
           alignment: Alignment.centerLeft,
-          child: Container(
+          child: SizedBox(
             width: double.infinity,
             child: Text(
               widget.selectedMovie.overview ?? '',

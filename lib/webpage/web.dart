@@ -228,9 +228,9 @@ class LogoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return const SizedBox(
       height: 100,
-      child: const Image(
+      child: Image(
         height: 150,
         image: NetworkImage(
             'https://s.tmimgcdn.com/scr/800x500/77700/letter-m-logo-template_77760-2-original.jpg'),
@@ -287,7 +287,7 @@ class ButtonWidget extends StatelessWidget {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => WebHomePage(),
+            builder: (context) => const WebHomePage(),
           ),
         );
       },

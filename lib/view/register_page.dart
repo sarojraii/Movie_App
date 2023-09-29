@@ -1,4 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_app/mobilepage/mobile.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -59,10 +62,15 @@ class _RegisterPageState extends State<RegisterPage> {
                         height: 20,
                       ),
                       ButtonWidget(
-                          firstNameKey: _firstNameKey,
-                          secondNameKey: _secondNameKey,
-                          emailKey: _emailKey,
-                          passwordKey: _passwordKey),
+                        firstNameKey: _firstNameKey,
+                        secondNameKey: _secondNameKey,
+                        emailKey: _emailKey,
+                        passwordKey: _passwordKey,
+                        emailNameController: emailController,
+                        firstNameController: firstNameController,
+                        passwordNameController: passwordController,
+                        secondNameController: secondNameController,
+                      ),
                     ],
                   ),
                 ),
@@ -75,31 +83,59 @@ class _RegisterPageState extends State<RegisterPage> {
   }
 }
 
-class ButtonWidget extends StatelessWidget {
+class ButtonWidget extends StatefulWidget {
   const ButtonWidget({
     super.key,
     required GlobalKey<FormFieldState> firstNameKey,
     required GlobalKey<FormFieldState> secondNameKey,
     required GlobalKey<FormFieldState> emailKey,
     required GlobalKey<FormFieldState> passwordKey,
-  })  : _firstNameKey = firstNameKey,
-        _secondNameKey = secondNameKey,
-        _emailKey = emailKey,
-        _passwordKey = passwordKey;
+    required TextEditingController firstNameController,
+    required TextEditingController secondNameController,
+    required TextEditingController emailNameController,
+    required TextEditingController passwordNameController,
+  })  : _emailKey = emailKey,
+        _passwordKey = passwordKey,
+        _emailController = emailNameController,
+        _passwordController = passwordNameController;
 
-  final GlobalKey<FormFieldState> _firstNameKey;
-  final GlobalKey<FormFieldState> _secondNameKey;
   final GlobalKey<FormFieldState> _emailKey;
   final GlobalKey<FormFieldState> _passwordKey;
 
+  final TextEditingController _emailController;
+  final TextEditingController _passwordController;
+
+  @override
+  State<ButtonWidget> createState() => _ButtonWidgetState();
+}
+
+class _ButtonWidgetState extends State<ButtonWidget> {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        _firstNameKey.currentState!.validate();
-        _secondNameKey.currentState!.validate();
-        _emailKey.currentState!.validate();
-        _passwordKey.currentState!.validate();
+      onTap: () async {
+        bool isEmailVerified = widget._emailKey.currentState!.validate();
+        bool isPasswordVerified = widget._passwordKey.currentState!.validate();
+        if (isEmailVerified && isPasswordVerified) {
+          try {
+            await FirebaseAuth.instance.createUserWithEmailAndPassword(
+              email: widget._emailController.text,
+              password: widget._passwordController.text,
+            );
+            if (context.mounted) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MobilePage(),
+                ),
+              );
+            }
+          } on FirebaseAuthException catch (e) {
+            if (kDebugMode) {
+              print(e);
+            }
+          }
+        }
       },
       child: Container(
         height: 40,
@@ -120,6 +156,15 @@ class ButtonWidget extends StatelessWidget {
 }
 
 class FormWidget extends StatelessWidget {
+  final GlobalKey<FormFieldState> _firstNameKey;
+  final TextEditingController firstNameController;
+  final GlobalKey<FormFieldState> _secondNameKey;
+  final TextEditingController secondNameController;
+  final GlobalKey<FormFieldState> _emailKey;
+  final TextEditingController emailController;
+  final GlobalKey<FormFieldState> _passwordKey;
+  final TextEditingController passwordController;
+
   const FormWidget({
     super.key,
     required GlobalKey<FormFieldState> firstNameKey,
@@ -134,15 +179,6 @@ class FormWidget extends StatelessWidget {
         _secondNameKey = secondNameKey,
         _emailKey = emailKey,
         _passwordKey = passwordKey;
-
-  final GlobalKey<FormFieldState> _firstNameKey;
-  final TextEditingController firstNameController;
-  final GlobalKey<FormFieldState> _secondNameKey;
-  final TextEditingController secondNameController;
-  final GlobalKey<FormFieldState> _emailKey;
-  final TextEditingController emailController;
-  final GlobalKey<FormFieldState> _passwordKey;
-  final TextEditingController passwordController;
 
   @override
   Widget build(BuildContext context) {

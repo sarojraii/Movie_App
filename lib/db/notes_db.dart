@@ -24,10 +24,10 @@ class NotesDatabase {
   }
 
   Future _createDB(Database db, int version) async {
-    final idType = 'INTERGER PRIMARY KEY AUTOINCREMENT';
-    final textType = '  TEXT NOT NULL';
-    final boolType = 'BOOLEAN NOT NULL';
-    final integerType = 'INTERGER  NOT NULL';
+    const idType = 'INTERGER PRIMARY KEY AUTOINCREMENT';
+    const textType = '  TEXT NOT NULL';
+    const boolType = 'BOOLEAN NOT NULL';
+    const integerType = 'INTERGER  NOT NULL';
 
     await db.execute('''
   CREATE TABLE $tableNotes(

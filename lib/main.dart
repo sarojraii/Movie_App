@@ -7,7 +7,7 @@ import 'package:movie_app/view/login.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 
-Future main() async {
+Future web() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: kIsWeb
@@ -19,16 +19,17 @@ Future main() async {
         : null,
   );
 
-  Future main() async {
-    WidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp();
-    if (Firebase.apps.isNotEmpty) {
-      print("flutter is connected");
-    } else {
-      print('Not connected');
-    }
-  }
+  runApp(const MyApp());
+}
 
+Future main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  if (Firebase.apps.isNotEmpty) {
+    print("flutter is connected");
+  } else {
+    print('Not connected');
+  }
   runApp(const MyApp());
 }
 
@@ -52,11 +53,6 @@ class _MyAppState extends State<MyApp> {
       ),
     );
   }
-
-  // const MaterialApp(
-  //   debugShowCheckedModeBanner: false,
-  //   home: HomePage(),
-  // );
 }
 
 class SplashScreenWidget extends StatelessWidget {
@@ -68,11 +64,11 @@ class SplashScreenWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedSplashScreen(
       duration: 3000,
-      splash: Center(
-        child: Container(
+      splash: const Center(
+        child: SizedBox(
           height: 700,
           width: 500,
-          child: const Image(
+          child: Image(
             image: NetworkImage(
               'https://s.tmimgcdn.com/scr/800x500/77700/letter-m-logo-template_77760-2-original.jpg',
             ),

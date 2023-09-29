@@ -4,9 +4,7 @@ import 'package:movie_app/view/explore_page.dart';
 import 'package:movie_app/view/profile_page.dart';
 import 'package:movie_app/view/provider_list.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'homepage.dart';
-import 'my_list.dart';
 
 class DashboardPage extends StatefulWidget {
   const DashboardPage({super.key});

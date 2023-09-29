@@ -140,7 +140,7 @@ class PremiumPackageWidget extends StatelessWidget {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.all(15.0),
+          padding: const EdgeInsets.all(15.0),
           child: Container(
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
