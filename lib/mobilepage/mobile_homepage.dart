@@ -2,6 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_app/Shimmer/Shimmer.dart';
 import 'package:movie_app/apipage/moviepage.dart';
 import '../model/models.dart';
 
@@ -18,6 +19,16 @@ class MobileHomePage extends StatefulWidget {
 class _MobileHomePageState extends State<MobileHomePage> {
   List<Result>? movies = [];
 
+  bool _shimmerEffect = true;
+
+  bool get shimmerEffect => _shimmerEffect;
+
+  set shimmerEffect(bool value) {
+    setState(() {
+      _shimmerEffect = value;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -25,6 +36,7 @@ class _MobileHomePageState extends State<MobileHomePage> {
   }
 
   void getData() async {
+    shimmerEffect = true;
     try {
       var response = await Dio().get(
           'https://api.themoviedb.org/3/movie/popular?key=f8aae75654842e23bf7af7f43fe3c6c2&page=1',
@@ -32,6 +44,8 @@ class _MobileHomePageState extends State<MobileHomePage> {
             "Content-Type": "application/json",
             "Authorization": "Bearer $token",
           }));
+      // ShimmerEffect = true;
+
       if (response.statusCode == 200) {
         final result = await parseRawData(response.data);
         setState(() {
@@ -45,6 +59,7 @@ class _MobileHomePageState extends State<MobileHomePage> {
       print("error---");
       print(e);
     }
+    shimmerEffect = false;
   }
 
   Future<MovieApi> parseRawData(Map<String, dynamic> apiResponse) async {
@@ -56,39 +71,73 @@ class _MobileHomePageState extends State<MobileHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blueGrey[900],
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              const CarouserlSliderWidget(),
-              const SizedBox(
-                height: 10,
+      body: SafeArea(
+        child: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              backgroundColor: Colors.blueGrey[900],
+              expandedHeight: 250,
+              pinned: false,
+              flexibleSpace: const FlexibleSpaceBar(
+                background: CarouserlSliderWidget(),
               ),
-              const TextWidget(),
-              const SizedBox(
-                height: 5,
-              ),
-              ImageWidget(movies: movies),
-              const SizedBox(
-                height: 5,
-              ),
-              const Padding(
-                padding: EdgeInsets.all(10),
-                child: RowWidget(),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              SecondImageWidget(movies: movies),
-            ],
-          ),
+            ),
+            const SliverToBoxAdapter(
+              child: TextWidget(),
+            ),
+            SliverToBoxAdapter(
+              child: shimmerEffect
+                  ? ShimmerProvider().shimmer()
+                  : ImageWidget(movies: movies),
+            ),
+            const SliverToBoxAdapter(
+              child: RowWidget(),
+            ),
+            SliverToBoxAdapter(
+              child: shimmerEffect
+                  ? ShimmerProvider().shimmer()
+                  : SecondImageWidget(movies: movies),
+            ),
+            const SliverToBoxAdapter(
+              child: RowWidget(),
+            ),
+            SliverToBoxAdapter(
+              child: shimmerEffect
+                  ? ShimmerProvider().shimmer()
+                  : SecondImageWidget(movies: movies),
+            ),
+          ],
         ),
       ),
     );
   }
 }
+
+// class ShimmerEffect extends StatefulWidget {
+//   const ShimmerEffect({super.key});
+
+//   @override
+//   State<ShimmerEffect> createState() => _ShimmerEffectState();
+// }
+
+// class _ShimmerEffectState extends State<ShimmerEffect> {
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       width: double.infinity,
+//       height: 230.0,
+//       child: Shimmer.fromColors(
+//         baseColor: Colors.red,
+//         highlightColor: Colors.yellow,
+//         child: Container(
+//           width: 140,
+//           height: 230.0,
+//           color: Colors.grey,
+//         ),
+//       ),
+//     );
+//   }
+// }
 
 class SecondImageWidget extends StatelessWidget {
   const SecondImageWidget({
@@ -105,6 +154,7 @@ class SecondImageWidget extends StatelessWidget {
         SizedBox(
           height: 230,
           child: ListView.builder(
+              shrinkWrap: true,
               physics: const BouncingScrollPhysics(),
               itemCount: movies?.length,
               scrollDirection: Axis.horizontal,
@@ -125,15 +175,21 @@ class SecondImageWidget extends StatelessWidget {
                       child: Container(
                         width: 140,
                         decoration: BoxDecoration(
-                          image: DecorationImage(
+                          image: const DecorationImage(
+                            image: AssetImage('image/placeholder.jpg'),
+                            fit: BoxFit.cover,
+                          ),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        margin: const EdgeInsets.all(5),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image(
                             image: NetworkImage(
                                 "https://image.tmdb.org/t/p/w500/${movies?[index].posterPath ?? ''}"),
                             fit: BoxFit.cover,
                           ),
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(20),
                         ),
-                        margin: const EdgeInsets.all(5),
                       ),
                     ));
               }),
@@ -183,6 +239,7 @@ class ImageWidget extends StatelessWidget {
         SizedBox(
           height: 230,
           child: ListView.builder(
+              shrinkWrap: true,
               physics: const BouncingScrollPhysics(),
               itemCount: movies?.length,
               scrollDirection: Axis.horizontal,
@@ -203,15 +260,21 @@ class ImageWidget extends StatelessWidget {
                       child: Container(
                         width: 140,
                         decoration: BoxDecoration(
-                          image: DecorationImage(
+                          image: const DecorationImage(
+                            image: AssetImage('image/placeholder.jpg'),
+                            fit: BoxFit.cover,
+                          ),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        margin: const EdgeInsets.all(5),
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: Image(
                             image: NetworkImage(
                                 "https://image.tmdb.org/t/p/w500/${movies?[index].posterPath ?? ''}"),
                             fit: BoxFit.cover,
                           ),
-                          color: Colors.red,
-                          borderRadius: BorderRadius.circular(20),
                         ),
-                        margin: const EdgeInsets.all(5),
                       ),
                     ));
               }),
@@ -252,12 +315,12 @@ class _TextWidgetState extends State<TextWidget> {
           //     child: const Center(child: Icon(Icons.add)),
           //   ),
           // ),
-          const Text(
+          Text(
             'Popular',
             style: TextStyle(
                 color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold),
           ),
-          const Text(
+          Text(
             'See all',
             style: TextStyle(
                 fontSize: 17, fontWeight: FontWeight.bold, color: Colors.red),

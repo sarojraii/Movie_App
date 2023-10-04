@@ -172,7 +172,7 @@ class _MoviePageState extends State<MoviePage> {
   }
 }
 
-class ConsumerWidget extends StatelessWidget {
+class ConsumerWidget extends StatefulWidget {
   const ConsumerWidget({
     super.key,
     required this.widget,
@@ -181,23 +181,43 @@ class ConsumerWidget extends StatelessWidget {
   final MoviePage widget;
 
   @override
+  State<ConsumerWidget> createState() => _ConsumerWidgetState();
+}
+
+class _ConsumerWidgetState extends State<ConsumerWidget> {
+  bool _changer = false;
+
+  bool get changer => _changer;
+
+  set changer(bool value) {
+    _changer = value;
+    setState(() {});
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(right: 20),
-      child: Consumer<MovieProvider>(
-        builder: (context, provider, child) {
-          return IconButton(
-            onPressed: () {
-              provider.addItem(widget.selectedMovie);
+    return Consumer<MovieProvider>(
+      builder: (context, Provider, child) {
+        return Padding(
+          padding: const EdgeInsets.only(right: 20),
+          child: Consumer<MovieProvider>(
+            builder: (context, provider, child) {
+              return IconButton(
+                onPressed: () {
+                  changer = !changer;
+                  !provider.movie.contains(widget.widget.selectedMovie)
+                      ? provider.addItem(widget.widget.selectedMovie)
+                      : provider.removeItem(widget.widget.selectedMovie);
+                },
+                icon: child ?? const SizedBox(),
+              );
             },
-            icon: child ?? const SizedBox(),
-          );
-        },
-        child: const Icon(
-          Icons.add_circle_outlined,
-          size: 30,
-        ),
-      ),
+            child: !Provider.movie.contains(widget.widget.selectedMovie)
+                ? const Icon(Icons.add_circle_outlined)
+                : const Icon(Icons.check_circle_rounded),
+          ),
+        );
+      },
     );
   }
 }

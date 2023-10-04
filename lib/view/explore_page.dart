@@ -139,6 +139,16 @@ class GridB extends StatefulWidget {
 
 class _GridBState extends State<GridB> {
   List<Result>? explore = [];
+  bool _shimmerEffect = true;
+
+  bool get shimmerEffect => _shimmerEffect;
+
+  set shimmerEffect(bool value) {
+    setState(() {
+      _shimmerEffect = value;
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -146,6 +156,7 @@ class _GridBState extends State<GridB> {
   }
 
   void getData() async {
+    shimmerEffect = true;
     try {
       var response = await Dio().get(
           'https://api.themoviedb.org/3/movie/popular?key=f8aae75654842e23bf7af7f43fe3c6c2&page=1',
@@ -166,6 +177,7 @@ class _GridBState extends State<GridB> {
       print("error---");
       print(e);
     }
+    shimmerEffect = false;
   }
 
   Future<MovieApi> parseRawData(Map<String, dynamic> apiResponse) async {

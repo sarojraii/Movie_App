@@ -2,7 +2,7 @@ import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/provider/provider.dart';
-import 'package:movie_app/view/login.dart';
+import 'package:movie_app/view/dashboard.dart';
 
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -23,10 +23,9 @@ Future web() async {
 }
 
 Future main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await web();
   if (Firebase.apps.isNotEmpty) {
-    print("flutter is connected");
+    print("firebase is connected");
   } else {
     print('Not connected');
   }
@@ -43,8 +42,15 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => MovieProvider(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => MovieProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => DashboardProvider(),
+        ),
+      ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
@@ -76,7 +82,7 @@ class SplashScreenWidget extends StatelessWidget {
           ),
         ),
       ),
-      nextScreen: const LoginPage(),
+      nextScreen: const DashboardPage(),
     );
   }
 }

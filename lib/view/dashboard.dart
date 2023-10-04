@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/view/explore_page.dart';
 import 'package:movie_app/view/profile_page.dart';
 import 'package:movie_app/view/provider_list.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'homepage.dart';
 
@@ -46,6 +47,38 @@ class _DashboardPageState extends State<DashboardPage> {
     });
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<DashboardProvider>(
+      builder: (context, provider, child) {
+        return Scaffold(
+          body: provider.navpages.elementAt(provider.currentIndex),
+          bottomNavigationBar: BottomNavigationBar(
+            type: BottomNavigationBarType.fixed,
+            currentIndex: provider.currentIndex,
+            onTap: provider.selectIndex,
+            fixedColor: Colors.blue,
+            backgroundColor: Colors.blueGrey[800],
+            unselectedItemColor: Colors.white,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: "Home",
+              ),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.explore), label: "Explore"),
+              BottomNavigationBarItem(icon: Icon(Icons.list), label: "List"),
+              BottomNavigationBarItem(
+                  icon: Icon(Icons.account_circle), label: "Profile"),
+            ],
+          ),
+        );
+      },
+    );
+  }
+}
+
+class DashboardProvider with ChangeNotifier {
   List navpages = [
     const HomePage(),
     const ExplorePage(),
@@ -54,34 +87,8 @@ class _DashboardPageState extends State<DashboardPage> {
   ];
   int currentIndex = 0;
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: navpages.elementAt(currentIndex),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        currentIndex: currentIndex,
-        onTap: selectIndex,
-        fixedColor: Colors.blue,
-        backgroundColor: Colors.blueGrey[800],
-        unselectedItemColor: Colors.white,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: "Home",
-          ),
-          BottomNavigationBarItem(icon: Icon(Icons.explore), label: "Explore"),
-          BottomNavigationBarItem(icon: Icon(Icons.list), label: "List"),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.account_circle), label: "Profile"),
-        ],
-      ),
-    );
-  }
-
   selectIndex(int index) {
-    setState(() {
-      currentIndex = index;
-    });
+    currentIndex = index;
+    notifyListeners();
   }
 }
