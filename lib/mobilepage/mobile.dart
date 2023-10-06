@@ -1,7 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart'; 
 import 'package:flutter/material.dart';
 import 'package:movie_app/view/dashboard.dart';
 import 'package:movie_app/view/register_page.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class MobilePage extends StatefulWidget {
   const MobilePage({super.key});
@@ -169,7 +171,7 @@ class EmailFieldWidget extends StatelessWidget {
   }
 }
 
-class ErrorCheckWidget extends StatelessWidget {
+class ErrorCheckWidget extends StatefulWidget {
   const ErrorCheckWidget({
     super.key,
     required GlobalKey<FormFieldState> emailField,
@@ -185,66 +187,102 @@ class ErrorCheckWidget extends StatelessWidget {
   final TextEditingController pwController;
 
   @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () async {
-        bool isEmailVerified = _emailField.currentState!.validate();
-        bool isPwVerified = _passwordField.currentState!.validate();
-        if (isEmailVerified && isPwVerified) {
-          try {
-            await FirebaseAuth.instance.signInWithEmailAndPassword(
-                email: emailController.text, password: pwController.text);
-            // ignore: use_build_context_synchronously
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const DashboardPage(),
-              ),
-            );
-          } on FirebaseAuthException catch (e) {
-            String? errorMessage;
-            switch (e.code) {
-              case 'user-not-found':
-                errorMessage = "Your email address is not registered.";
-                break;
-              case 'wrong-password':
-                errorMessage = "Your password is incorrect.";
-                break;
-              case 'too-many-requests':
-                errorMessage = 'Too many attempt. Please try again later.';
-              default:
-                errorMessage = "An undefined Error happened.";
-            }
+  State<ErrorCheckWidget> createState() => _ErrorCheckWidgetState();
+}
 
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: Text(errorMessage!),
-                  actions: <Widget>[
-                    TextButton(
-                      child: const Text('OK'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
+class _ErrorCheckWidgetState extends State<ErrorCheckWidget> {
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
+
+  set isLoading(bool value) {
+    _isLoading = value;
+    setState(() {});
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<DashboardProvider>(
+      builder: (context, provider, child) {
+        return InkWell(
+          onTap: () async {
+            bool isEmailVerified = widget._emailField.currentState!.validate();
+            bool isPwVerified = widget._passwordField.currentState!.validate();
+
+            if (isEmailVerified && isPwVerified) {
+              isLoading = true;
+
+              try {
+                var userCredential = await FirebaseAuth.instance
+                    .signInWithEmailAndPassword(
+                        email: widget.emailController.text,
+                        password: widget.pwController.text);
+
+                SharedPreferences prefs = await SharedPreferences.getInstance();
+
+                prefs.setString('userInfo', userCredential.user?.email ?? '');
+
+                // ignore: use_build_context_synchronously
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const DashboardPage()),
                 );
-              },
-            );
-          }
-        }
+              } on FirebaseAuthException catch (e) {
+                String? errorMessage;
+                switch (e.code) {
+                  case 'user-not-found':
+                    errorMessage = "Your email address is not registered.";
+                    break;
+                  case 'wrong-password':
+                    errorMessage = "Your password is incorrect.";
+                    break;
+                  case 'too-many-requests':
+                    errorMessage = 'Too many attempt. Please try again later.';
+                  default:
+                    errorMessage = "An undefined Error happened.";
+                }
+                isLoading = false;
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text(errorMessage!),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text('OK'),
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              }
+            }
+          },
+          child: ButtonWidget(
+            isLoading: isLoading,
+          ),
+        );
       },
-      child: const ButtonWidget(),
     );
   }
 }
 
-class ButtonWidget extends StatelessWidget {
+class ButtonWidget extends StatefulWidget {
+  final bool isLoading;
   const ButtonWidget({
+    required this.isLoading,
     super.key,
   });
 
+  @override
+  State<ButtonWidget> createState() => _ButtonWidgetState();
+}
+
+class _ButtonWidgetState extends State<ButtonWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -254,11 +292,16 @@ class ButtonWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(5),
         color: Colors.purple.shade200,
       ),
-      child: const Center(
-        child: Text(
-          'Login',
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        ),
+      child: Center(
+        child: widget.isLoading
+            ? const CircularProgressIndicator(
+                backgroundColor: Colors.white,
+                color: Colors.black,
+              )
+            : const Text(
+                'Login',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
       ),
     );
   }

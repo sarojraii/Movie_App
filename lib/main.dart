@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/provider/provider.dart';
 import 'package:movie_app/view/dashboard.dart';
-
+import 'package:movie_app/view/login.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 
@@ -82,7 +82,7 @@ class SplashScreenWidget extends StatelessWidget {
           ),
         ),
       ),
-      nextScreen: const DashboardPage(),
+      nextScreen: const LoginPage(),
     );
   }
 }

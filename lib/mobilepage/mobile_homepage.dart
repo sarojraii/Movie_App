@@ -4,6 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/Shimmer/Shimmer.dart';
 import 'package:movie_app/apipage/moviepage.dart';
+import 'package:movie_app/view/dashboard.dart';
+import 'package:provider/provider.dart';
 import '../model/models.dart';
 
 const String token =
@@ -44,7 +46,6 @@ class _MobileHomePageState extends State<MobileHomePage> {
             "Content-Type": "application/json",
             "Authorization": "Bearer $token",
           }));
-      // ShimmerEffect = true;
 
       if (response.statusCode == 200) {
         final result = await parseRawData(response.data);
@@ -113,32 +114,6 @@ class _MobileHomePageState extends State<MobileHomePage> {
   }
 }
 
-// class ShimmerEffect extends StatefulWidget {
-//   const ShimmerEffect({super.key});
-
-//   @override
-//   State<ShimmerEffect> createState() => _ShimmerEffectState();
-// }
-
-// class _ShimmerEffectState extends State<ShimmerEffect> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       width: double.infinity,
-//       height: 230.0,
-//       child: Shimmer.fromColors(
-//         baseColor: Colors.red,
-//         highlightColor: Colors.yellow,
-//         child: Container(
-//           width: 140,
-//           height: 230.0,
-//           color: Colors.grey,
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 class SecondImageWidget extends StatelessWidget {
   const SecondImageWidget({
     super.key,
@@ -206,18 +181,29 @@ class RowWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Row(
+    return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(
+        const Text(
           'New Release',
           style: TextStyle(
               color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold),
         ),
-        Text(
-          'See all',
-          style: TextStyle(
-              fontSize: 17, fontWeight: FontWeight.bold, color: Colors.red),
+        Consumer<DashboardProvider>(
+          builder: (context, provider, child) {
+            return InkWell(
+              onTap: () {
+                provider.selectIndex(1);
+              },
+              child: const Text(
+                'See all',
+                style: TextStyle(
+                    fontSize: 17,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.red),
+              ),
+            );
+          },
         ),
       ],
     );
@@ -296,34 +282,31 @@ class TextWidget extends StatefulWidget {
 class _TextWidgetState extends State<TextWidget> {
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.all(10),
+    return Padding(
+      padding: const EdgeInsets.all(10),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          // InkWell(
-          //   onTap: () async {
-          //     final SharedPreferences prefs =
-          //         await SharedPreferences.getInstance();
-
-          //     prefs.setBool('adShown', false);
-          //   },
-          //   child: Container(
-          //     height: 20,
-          //     width: 30,
-          //     color: Colors.red,
-          //     child: const Center(child: Icon(Icons.add)),
-          //   ),
-          // ),
-          Text(
+          const Text(
             'Popular',
             style: TextStyle(
                 color: Colors.white, fontSize: 17, fontWeight: FontWeight.bold),
           ),
-          Text(
-            'See all',
-            style: TextStyle(
-                fontSize: 17, fontWeight: FontWeight.bold, color: Colors.red),
+          Consumer<DashboardProvider>(
+            builder: (context, provider, child) {
+              return InkWell(
+                onTap: () {
+                  provider.selectIndex(1);
+                },
+                child: const Text(
+                  'See all',
+                  style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.red),
+                ),
+              );
+            },
           ),
         ],
       ),
@@ -454,18 +437,28 @@ class _StackerState extends State<Stacker> {
               const SizedBox(
                 width: 20,
               ),
-              Container(
-                height: 27,
-                width: 85,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(width: 2, color: Colors.white)),
-                child: Center(
-                  child: Text(
-                    widget.text4,
-                    style: const TextStyle(fontSize: 18, color: Colors.white),
-                  ),
-                ),
+              Consumer<DashboardProvider>(
+                builder: (context, provider, child) {
+                  return InkWell(
+                    onTap: () {
+                      provider.selectIndex(2);
+                    },
+                    child: Container(
+                      height: 27,
+                      width: 85,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(width: 2, color: Colors.white)),
+                      child: Center(
+                        child: Text(
+                          widget.text4,
+                          style: const TextStyle(
+                              fontSize: 18, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
             ],
           ),

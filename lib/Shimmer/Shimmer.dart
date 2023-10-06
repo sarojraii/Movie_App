@@ -6,7 +6,6 @@ class ShimmerProvider {
     return Container(
       width: 500,
       height: 230,
-      // color: Colors.red,
       child: ListView.builder(
           shrinkWrap: true,
           physics: const BouncingScrollPhysics(),

@@ -1,4 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:movie_app/provider/provider.dart';
+import 'package:movie_app/view/dashboard.dart';
+import 'package:movie_app/view/login.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -23,27 +28,59 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> userInput() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     setState(() {
-      emailController = sp.getString('Email') ?? '';
+      emailController = sp.getString('userInfo') ?? '';
       pwController = sp.getString('password') ?? '';
     });
   }
 
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blueGrey[900],
       body: SafeArea(
         child: Column(
           children: [
-            const Padding(
-              padding: EdgeInsets.all(15.0),
+            Padding(
+              padding: const EdgeInsets.all(15.0),
               child: Column(
                 children: [
-                  Text(
-                    'Profile',
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      const Text(
+                        'Profile',
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white),
+                      ),
+                      ElevatedButton(
+                        onPressed: () async {
+                          SharedPreferences pref =
+                              await SharedPreferences.getInstance();
+                          pref.setString('userInfo', '');
+                          _auth.signOut();
+                          if (context.mounted) {
+                            context.read<DashboardProvider>().selectIndex(0);
+                            context.read<MovieProvider>().movie.clear();
+                          }
+
+                          if (context.mounted) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return const LoginPage();
+                                },
+                              ),
+                            );
+                          }
+                        },
+                        child: const Icon(Icons.logout),
+                      ),
+                    ],
                   ),
                 ],
               ),
@@ -97,13 +134,13 @@ class UserInfoWidget extends StatelessWidget {
       child: Column(
         children: [
           MyProfile(
-            iconed: Icons.person,
+            icons: Icons.person,
             text: 'Edit Profile',
           ),
           Column(
             children: [
               MyProfile(
-                iconed: Icons.notifications,
+                icons: Icons.notifications,
                 text: 'Notification',
               ),
             ],
@@ -111,7 +148,7 @@ class UserInfoWidget extends StatelessWidget {
           Column(
             children: [
               MyProfile(
-                iconed: Icons.downloading_outlined,
+                icons: Icons.downloading_outlined,
                 text: 'Download',
               ),
             ],
@@ -119,7 +156,7 @@ class UserInfoWidget extends StatelessWidget {
           Column(
             children: [
               MyProfile(
-                iconed: Icons.security,
+                icons: Icons.security,
                 text: 'Security',
               ),
             ],
@@ -191,10 +228,10 @@ class PremiumPackageWidget extends StatelessWidget {
 }
 
 class MyProfile extends StatelessWidget {
-  final IconData iconed;
+  final IconData icons;
   final String text;
 
-  const MyProfile({required this.iconed, required this.text, super.key});
+  const MyProfile({required this.icons, required this.text, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -214,7 +251,7 @@ class MyProfile extends StatelessWidget {
               Expanded(
                 flex: 1,
                 child: Icon(
-                  iconed,
+                  icons,
                   color: Colors.white,
                   size: 25,
                 ),

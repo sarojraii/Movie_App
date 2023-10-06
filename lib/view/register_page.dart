@@ -4,13 +4,24 @@ import 'package:flutter/material.dart';
 import 'package:movie_app/mobilepage/mobile.dart';
 
 class RegisterPage extends StatefulWidget {
-  const RegisterPage({super.key});
+  const RegisterPage({
+    super.key,
+  });
 
   @override
   State<RegisterPage> createState() => _RegisterPageState();
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
+
+  set isLoading(bool value) {
+    _isLoading = value;
+    setState(() {});
+  }
+
   final _firstNameKey = GlobalKey<FormFieldState>();
   final _secondNameKey = GlobalKey<FormFieldState>();
   final _emailKey = GlobalKey<FormFieldState>();
@@ -62,6 +73,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         height: 20,
                       ),
                       ButtonWidget(
+                        isLoading: isLoading,
                         firstNameKey: _firstNameKey,
                         secondNameKey: _secondNameKey,
                         emailKey: _emailKey,
@@ -84,8 +96,10 @@ class _RegisterPageState extends State<RegisterPage> {
 }
 
 class ButtonWidget extends StatefulWidget {
+  final bool isLoading;
   const ButtonWidget({
     super.key,
+    required this.isLoading,
     required GlobalKey<FormFieldState> firstNameKey,
     required GlobalKey<FormFieldState> secondNameKey,
     required GlobalKey<FormFieldState> emailKey,
@@ -110,6 +124,15 @@ class ButtonWidget extends StatefulWidget {
 }
 
 class _ButtonWidgetState extends State<ButtonWidget> {
+  bool _isLoading = false;
+
+  bool get isLoading => _isLoading;
+
+  set isLoading(bool value) {
+    _isLoading = value;
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -117,11 +140,14 @@ class _ButtonWidgetState extends State<ButtonWidget> {
         bool isEmailVerified = widget._emailKey.currentState!.validate();
         bool isPasswordVerified = widget._passwordKey.currentState!.validate();
         if (isEmailVerified && isPasswordVerified) {
+          isLoading = true;
           try {
             await FirebaseAuth.instance.createUserWithEmailAndPassword(
               email: widget._emailController.text,
               password: widget._passwordController.text,
             );
+            print('${widget._emailController.text} has been registered');
+
             if (context.mounted) {
               Navigator.push(
                 context,
@@ -135,6 +161,7 @@ class _ButtonWidgetState extends State<ButtonWidget> {
               print(e);
             }
           }
+          isLoading = false;
         }
       },
       child: Container(
@@ -144,11 +171,16 @@ class _ButtonWidgetState extends State<ButtonWidget> {
           color: Colors.purple.shade200,
           borderRadius: BorderRadius.circular(5),
         ),
-        child: const Center(
-          child: Text(
-            'Sign Up',
-            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-          ),
+        child: Center(
+          child: isLoading
+              ? const CircularProgressIndicator(
+                  backgroundColor: Colors.black,
+                  color: Colors.white,
+                )
+              : const Text(
+                  'Sign Up',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
         ),
       ),
     );
