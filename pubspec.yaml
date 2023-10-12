@@ -52,7 +52,13 @@ dependencies:
   firebase_auth: ^4.10.0
   provider: ^6.0.5
   ad_package:
-    path: C:/Users/Lenovo/Desktop/flutter/ad_package_app/ad_package
+    git:
+      url: https://github.com/sarojraii/my-packages.git
+      ref: main
+  splashpage_package:
+    git:
+      url: https://github.com/sarojraii/SplashScreen-package.git
+      ref: main
 
 dev_dependencies:
   flutter_test:

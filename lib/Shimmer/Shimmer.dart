@@ -13,12 +13,12 @@ class ShimmerProvider {
           scrollDirection: Axis.horizontal,
           itemBuilder: (context, index) {
             return Shimmer.fromColors(
-              baseColor: Colors.grey,
+              baseColor: const Color(0xFFE0E0E0),
               highlightColor: Colors.white,
               child: Container(
                 height: 230,
                 width: 140,
-                margin: EdgeInsets.all(10),
+                margin: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),

@@ -12,9 +12,11 @@ packages:
   ad_package:
     dependency: "direct main"
     description:
-      path: "C:\\Users\\Lenovo\\Desktop\\flutter\\ad_package_app\\ad_package"
-      relative: false
-    source: path
+      path: "."
+      ref: main
+      resolved-ref: "0adb6a2ab6a175895efb24e1b02af9fbb6e5b8ca"
+      url: "https://github.com/sarojraii/my-packages.git"
+    source: git
     version: "0.0.1"
   animated_splash_screen:
     dependency: "direct main"
@@ -428,6 +430,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.9.1"
+  splashpage_package:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: main
+      resolved-ref: e2e95cd335f18e6aed913dc079cffc7e99173536
+      url: "https://github.com/sarojraii/SplashScreen-package.git"
+    source: git
+    version: "0.0.1"
   sqflite:
     dependency: "direct main"
     description:

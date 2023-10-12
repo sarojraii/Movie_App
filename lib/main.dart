@@ -1,4 +1,3 @@
-import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/provider/provider.dart';
@@ -6,6 +5,7 @@ import 'package:movie_app/view/dashboard.dart';
 import 'package:movie_app/view/login.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:splashpage_package/splashpage_package.dart';
 
 Future web() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,36 +53,14 @@ class _MyAppState extends State<MyApp> {
       ],
       child: const MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: Scaffold(
-          body: SplashScreenWidget(),
+        home: SplashPage(
+          images: 'image/movie logo.jpg',
+          nextScreen: LoginPage(),
+          text: 'SplashScreen',
+          height: 100,
+          width: 100,
         ),
       ),
-    );
-  }
-}
-
-class SplashScreenWidget extends StatelessWidget {
-  const SplashScreenWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedSplashScreen(
-      duration: 3000,
-      splash: const Center(
-        child: SizedBox(
-          height: 700,
-          width: 500,
-          child: Image(
-            image: NetworkImage(
-              'https://s.tmimgcdn.com/scr/800x500/77700/letter-m-logo-template_77760-2-original.jpg',
-            ),
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
-      nextScreen: const LoginPage(),
     );
   }
 }

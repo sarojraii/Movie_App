@@ -1,4 +1,4 @@
-import 'package:firebase_auth/firebase_auth.dart'; 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/view/dashboard.dart';
 import 'package:movie_app/view/register_page.dart';
@@ -296,7 +296,7 @@ class _ButtonWidgetState extends State<ButtonWidget> {
         child: widget.isLoading
             ? const CircularProgressIndicator(
                 backgroundColor: Colors.white,
-                color: Colors.black,
+                color: Colors.grey,
               )
             : const Text(
                 'Login',
@@ -317,7 +317,7 @@ class RegisterPageWidget extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        const Text('Dont have an account?'),
+        const Text('Don\'t have an account?'),
         const SizedBox(
           width: 5,
         ),

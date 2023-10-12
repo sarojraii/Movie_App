@@ -57,19 +57,27 @@ class _DashboardPageState extends State<DashboardPage> {
             type: BottomNavigationBarType.fixed,
             currentIndex: provider.currentIndex,
             onTap: provider.selectIndex,
-            fixedColor: Colors.blue,
+            selectedItemColor: Colors.red,
             backgroundColor: Colors.blueGrey[800],
             unselectedItemColor: Colors.white,
+            selectedLabelStyle: const TextStyle(color: Colors.white),
             items: const [
               BottomNavigationBarItem(
                 icon: Icon(Icons.home),
                 label: "Home",
               ),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.explore), label: "Explore"),
-              BottomNavigationBarItem(icon: Icon(Icons.list), label: "List"),
+                icon: Icon(Icons.explore),
+                label: "Explore",
+              ),
               BottomNavigationBarItem(
-                  icon: Icon(Icons.account_circle), label: "Profile"),
+                icon: Icon(Icons.list),
+                label: "List",
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.account_circle),
+                label: "Profile",
+              ),
             ],
           ),
         );

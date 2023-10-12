@@ -14,7 +14,7 @@ class ShimmerExplore {
       physics: const BouncingScrollPhysics(),
       itemBuilder: (_, index) {
         return Shimmer.fromColors(
-          baseColor: Colors.grey,
+          baseColor: const Color(0xFFE0E0E0),
           highlightColor: Colors.white,
           child: Container(
             height: 240,
