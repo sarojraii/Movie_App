@@ -49,7 +49,7 @@ class _SplashPageState extends State<SplashPage>
   }
 
   Future<void> splashScreen() async {
-    await Future.delayed(const Duration(seconds: 5), () {
+    await Future.delayed(const Duration(seconds: 4), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -83,9 +83,6 @@ class _SplashPageState extends State<SplashPage>
                 ),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
             AnimatedBuilder(
               animation: _controller,
               builder: (context, child) {
@@ -99,7 +96,7 @@ class _SplashPageState extends State<SplashPage>
                             .animate(_controller),
                         child: Text(
                           widget.text,
-                          style: const TextStyle(fontSize: 20),
+                          style: const TextStyle(fontSize: 25),
                         ),
                       ),
                     ));

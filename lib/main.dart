@@ -5,6 +5,7 @@ import 'package:movie_app/view/dashboard.dart';
 import 'package:movie_app/view/login.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:splashpage_package/splashpage_package.dart';
 
 Future web() async {
@@ -41,6 +42,20 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   @override
+  void initState() {
+    super.initState();
+    splashScreen();
+  }
+
+  bool? isLoggedIn;
+  Future<void> splashScreen() async {
+    SharedPreferences _pref = await SharedPreferences.getInstance();
+
+    isLoggedIn = await _pref.getBool('isLogged');
+    print(isLoggedIn);
+  }
+
+  @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
@@ -51,14 +66,15 @@ class _MyAppState extends State<MyApp> {
           create: (_) => DashboardProvider(),
         ),
       ],
-      child: const MaterialApp(
+      child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: SplashPage(
           images: 'image/movie logo.jpg',
-          nextScreen: LoginPage(),
-          text: 'SplashScreen',
-          height: 100,
-          width: 100,
+          nextScreen:
+              isLoggedIn ?? false ? const DashboardPage() : const LoginPage(),
+          text: 'FILM FLOW',
+          height: 200,
+          width: 200,
         ),
       ),
     );

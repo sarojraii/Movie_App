@@ -433,11 +433,9 @@ packages:
   splashpage_package:
     dependency: "direct main"
     description:
-      path: "."
-      ref: main
-      resolved-ref: e2e95cd335f18e6aed913dc079cffc7e99173536
-      url: "https://github.com/sarojraii/SplashScreen-package.git"
-    source: git
+      path: "C:/Users/Lenovo/Desktop/flutter/movie_app/splashpage_package"
+      relative: false
+    source: path
     version: "0.0.1"
   sqflite:
     dependency: "direct main"

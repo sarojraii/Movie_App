@@ -221,6 +221,9 @@ class _ErrorCheckWidgetState extends State<ErrorCheckWidget> {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
 
                 prefs.setString('userInfo', userCredential.user?.email ?? '');
+                SharedPreferences pref = await SharedPreferences.getInstance();
+
+                pref.setBool('isLogged', true);
 
                 // ignore: use_build_context_synchronously
                 Navigator.pushReplacement(
@@ -243,6 +246,8 @@ class _ErrorCheckWidgetState extends State<ErrorCheckWidget> {
                     errorMessage = "An undefined Error happened.";
                 }
                 isLoading = false;
+
+                // ignore: use_build_context_synchronously
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
@@ -273,6 +278,7 @@ class _ErrorCheckWidgetState extends State<ErrorCheckWidget> {
 
 class ButtonWidget extends StatefulWidget {
   final bool isLoading;
+
   const ButtonWidget({
     required this.isLoading,
     super.key,

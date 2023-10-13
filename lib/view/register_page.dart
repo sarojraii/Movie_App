@@ -108,13 +108,17 @@ class ButtonWidget extends StatefulWidget {
     required TextEditingController secondNameController,
     required TextEditingController emailNameController,
     required TextEditingController passwordNameController,
-  })  : _emailKey = emailKey,
+  })  : _firstNameKey = firstNameKey,
+        _secondNameKey = secondNameKey,
+        _emailKey = emailKey,
         _passwordKey = passwordKey,
         _emailController = emailNameController,
         _passwordController = passwordNameController;
 
   final GlobalKey<FormFieldState> _emailKey;
   final GlobalKey<FormFieldState> _passwordKey;
+  final GlobalKey<FormFieldState> _firstNameKey;
+  final GlobalKey<FormFieldState> _secondNameKey;
 
   final TextEditingController _emailController;
   final TextEditingController _passwordController;
@@ -137,9 +141,15 @@ class _ButtonWidgetState extends State<ButtonWidget> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () async {
+        bool isFnVerified = widget._firstNameKey.currentState!.validate();
+        bool isSnVerified = widget._secondNameKey.currentState!.validate();
+
         bool isEmailVerified = widget._emailKey.currentState!.validate();
         bool isPasswordVerified = widget._passwordKey.currentState!.validate();
-        if (isEmailVerified && isPasswordVerified) {
+        if (isEmailVerified &&
+            isPasswordVerified &&
+            isFnVerified &&
+            isSnVerified) {
           isLoading = true;
           try {
             await FirebaseAuth.instance.createUserWithEmailAndPassword(
@@ -221,9 +231,10 @@ class FormWidget extends StatelessWidget {
           labelText: 'First Name',
           formkey: _firstNameKey,
           textFieldController: firstNameController,
-          validators: (input) {
-            if (input == null || input.isEmpty) {
-              return 'Please Enter Your First Name';
+          // Validator for First Name
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter first name';
             }
             return null;
           },
@@ -233,26 +244,27 @@ class FormWidget extends StatelessWidget {
           labelText: 'Second Name',
           formkey: _secondNameKey,
           textFieldController: secondNameController,
-          validators: (input) {
-            if (input == null || input.isEmpty) {
-              return 'Please Enter your Second Name';
+          validator: (value) {
+            if (value == null || value.isEmpty) {
+              return 'Please enter second name';
             }
             return null;
           },
         ),
         Myform(
-          hintText: 'Email',
+          hintText: 'Emaasdail',
           labelText: 'Email',
           formkey: _emailKey,
           textFieldController: emailController,
-          validators: (value) {
-            bool emailValid = RegExp(
-                    r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                .hasMatch(value!);
+          validator: (value) {
+            RegExp regex = RegExp(
+                r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+
             if (value == null || value.isEmpty) {
-              return 'Please Enter Email Address';
-            } else if (emailValid == false) {
-              return 'Please Enter Valid Email Address';
+              return 'please fill the Email';
+            }
+            if (!regex.hasMatch(value)) {
+              return 'Invalid Email';
             }
             return null;
           },
@@ -262,7 +274,7 @@ class FormWidget extends StatelessWidget {
           labelText: 'Password',
           formkey: _passwordKey,
           textFieldController: passwordController,
-          validators: (input) {
+          validator: (input) {
             RegExp regex = RegExp(
                 r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$');
             if (input == null || input.isEmpty) {
@@ -285,7 +297,7 @@ class Myform extends StatefulWidget {
   final String hintText;
   final String labelText;
   final TextEditingController textFieldController;
-  final String? Function(dynamic)? validators;
+  final String? Function(dynamic)? validator;
 
   const Myform({
     super.key,
@@ -293,7 +305,7 @@ class Myform extends StatefulWidget {
     required this.labelText,
     required this.formkey,
     required this.textFieldController,
-    required this.validators,
+    required this.validator,
   });
 
   @override
@@ -305,7 +317,7 @@ class _MyformState extends State<Myform> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: FormField(
-        validator: widget.validators,
+        validator: widget.validator,
         key: widget.formkey,
         builder: (FormFieldState formFieldState) {
           return Column(
