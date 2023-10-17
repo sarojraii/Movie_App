@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:movie_app/provider/provider.dart';
 import 'package:movie_app/view/dashboard.dart';
 import 'package:movie_app/view/login.dart';
@@ -18,6 +19,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
   String emailController = '';
   String pwController = '';
+  String userPhoto = '';
+  String newLogin = '';
 
   @override
   void initState() {
@@ -28,8 +31,9 @@ class _ProfilePageState extends State<ProfilePage> {
   Future<void> userInput() async {
     SharedPreferences sp = await SharedPreferences.getInstance();
     setState(() {
-      emailController = sp.getString('userInfo') ?? '';
+      emailController = sp.getString('userEmail') ?? '';
       pwController = sp.getString('password') ?? '';
+      userPhoto = sp.getString('userPhoto') ?? '';
     });
   }
 
@@ -62,6 +66,10 @@ class _ProfilePageState extends State<ProfilePage> {
                               await SharedPreferences.getInstance();
                           pref.setString('userInfo', '');
                           _auth.signOut();
+                          await GoogleSignIn().signOut();
+                          FirebaseAuth.instance.signOut();
+                          _auth.signOut();
+                          print(GoogleSignIn().signOut());
                           if (context.mounted) {
                             context.read<DashboardProvider>().selectIndex(0);
                             context.read<MovieProvider>().movie.clear();
@@ -88,11 +96,11 @@ class _ProfilePageState extends State<ProfilePage> {
             const SizedBox(
               height: 5,
             ),
-            const Center(
+            Center(
               child: CircleAvatar(
                 backgroundColor: Colors.white,
                 radius: 70,
-                backgroundImage: AssetImage('image/me.jpg'),
+                backgroundImage: NetworkImage(userPhoto),
               ),
             ),
             const SizedBox(

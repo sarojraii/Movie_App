@@ -1,9 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:movie_app/view/dashboard.dart';
 import 'package:movie_app/view/register_page.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class MobilePage extends StatefulWidget {
   const MobilePage({super.key});
@@ -105,15 +107,112 @@ class _MobilePageState extends State<MobilePage> {
                 const Center(
                   child: RegisterPageWidget(),
                 ),
-                const SizedBox(
-                  height: 30,
-                ),
+                const OtherLoginMethod(),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+}
+
+class OtherLoginMethod extends StatefulWidget {
+  const OtherLoginMethod({
+    super.key,
+  });
+
+  @override
+  State<OtherLoginMethod> createState() => _OtherLoginMethodState();
+}
+
+class _OtherLoginMethodState extends State<OtherLoginMethod> {
+  var userEmail = '';
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(25.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          InkWell(
+            onTap: () {
+              signInWithFacebook();
+            },
+            child: Container(
+              height: 50,
+              width: 100,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+              ),
+              child: Image.asset(
+                'image/facebook.png',
+                scale: 20,
+              ),
+            ),
+          ),
+          InkWell(
+            onTap: () {
+              signInWithGoogle();
+            },
+            child: Container(
+              height: 50,
+              width: 100,
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+              ),
+              child: Image.asset(
+                'image/google.png',
+                scale: 20,
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
+  Future<UserCredential> signInWithFacebook() async {
+    // Trigger the sign-in flow
+    final LoginResult loginResult = await FacebookAuth.instance
+        .login(permissions: ['email', 'public_profile', 'user_birthday']);
+
+    // Create a credential from the access token
+    final OAuthCredential facebookAuthCredential =
+        FacebookAuthProvider.credential(loginResult.accessToken!.token);
+    final userData = await FacebookAuth.instance.getUserData();
+
+    userEmail = userData['email'];
+
+    // Once signed in, return the UserCredential
+    return FirebaseAuth.instance.signInWithCredential(facebookAuthCredential);
+  }
+
+  signInWithGoogle() async {
+    GoogleSignInAccount? googleUSer = await GoogleSignIn().signIn();
+
+    GoogleSignInAuthentication? googleAuth = await googleUSer?.authentication;
+    AuthCredential credential = GoogleAuthProvider.credential(
+      accessToken: googleAuth?.accessToken,
+      idToken: googleAuth?.idToken,
+    );
+
+    UserCredential userCredential =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setString('userEmail', '${userCredential.user?.displayName}');
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    prefs.setString('userPhoto', '${userCredential.user?.photoURL}');
+    if (userCredential.user != null) {
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(
+          builder: (context) {
+            return const DashboardPage();
+          },
+        ),
+      );
+    }
   }
 }
 
