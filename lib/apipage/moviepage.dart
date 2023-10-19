@@ -197,7 +197,7 @@ class _ConsumerWidgetState extends State<ConsumerWidget> {
   @override
   Widget build(BuildContext context) {
     return Consumer<MovieProvider>(
-      builder: (context, Provider, child) {
+      builder: (context, provider, child) {
         return Padding(
           padding: const EdgeInsets.only(right: 20),
           child: Consumer<MovieProvider>(
@@ -212,7 +212,7 @@ class _ConsumerWidgetState extends State<ConsumerWidget> {
                 icon: child ?? const SizedBox(),
               );
             },
-            child: !Provider.movie.contains(widget.widget.selectedMovie)
+            child: !provider.movie.contains(widget.widget.selectedMovie)
                 ? const Icon(Icons.add_circle_outlined)
                 : const Icon(Icons.check_circle_rounded),
           ),

@@ -69,6 +69,7 @@ class _MobilePageState extends State<MobilePage> {
                   height: 10,
                 ),
                 MyField(
+                  icons: const Icon(Icons.abc),
                   formkey: _passwordField,
                   hintText: 'Password',
                   textEditingController: pwController,
@@ -201,10 +202,11 @@ class _OtherLoginMethodState extends State<OtherLoginMethod> {
         await FirebaseAuth.instance.signInWithCredential(credential);
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setString('userEmail', '${userCredential.user?.displayName}');
-    SharedPreferences prefs = await SharedPreferences.getInstance();
+    SharedPreferences pres = await SharedPreferences.getInstance();
 
-    prefs.setString('userPhoto', '${userCredential.user?.photoURL}');
+    pres.setString('userPhoto', '${userCredential.user?.photoURL}');
     if (userCredential.user != null) {
+      // ignore: use_build_context_synchronously
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) {
@@ -223,9 +225,9 @@ class LogoWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return const SizedBox(
       height: 200,
-      child: const Image(
+      child: Image(
         height: 150,
         image: NetworkImage(
             'https://s.tmimgcdn.com/scr/800x500/77700/letter-m-logo-template_77760-2-original.jpg'),
@@ -250,6 +252,7 @@ class EmailFieldWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return MyField(
       formkey: _emailField,
+      icons: const Icon(Icons.email),
       hintText: 'Email',
       suffixIcon: null,
       textEditingController: emailController,
@@ -328,7 +331,8 @@ class _ErrorCheckWidgetState extends State<ErrorCheckWidget> {
                 Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => const DashboardPage()),
+                    builder: (context) => const DashboardPage(),
+                  ),
                 );
               } on FirebaseAuthException catch (e) {
                 String? errorMessage;
@@ -451,6 +455,7 @@ class MyField extends StatefulWidget {
   final dynamic suffixIcon;
   final bool obscureText;
   final String? Function(dynamic)? validators;
+  final Icon icons;
 
   const MyField({
     super.key,
@@ -460,6 +465,7 @@ class MyField extends StatefulWidget {
     required this.suffixIcon,
     required this.obscureText,
     required this.validators,
+    required this.icons,
   });
 
   @override
@@ -495,7 +501,7 @@ class _MyFieldState extends State<MyField> {
                     hintText: widget.hintText,
                     filled: true,
                     fillColor: Colors.grey.withOpacity(0.2),
-                    prefixIcon: const Icon(Icons.email),
+                    prefixIcon: widget.icons,
                     suffixIcon: widget.suffixIcon,
                     enabledBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.grey.shade300),

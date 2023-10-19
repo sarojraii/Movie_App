@@ -4,10 +4,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_app/view/explore_page.dart';
 import 'package:movie_app/view/profile_page.dart';
-
 import '../../apipage/moviepage.dart';
 import '../../model/models.dart';
-
 import '../view/homepage.dart';
 import '../mobilepage/mobile_homepage.dart';
 import '../view/provider_list.dart';

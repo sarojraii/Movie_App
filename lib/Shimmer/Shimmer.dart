@@ -3,7 +3,7 @@ import 'package:shimmer/shimmer.dart';
 
 class ShimmerProvider {
   shimmer() {
-    return Container(
+    return SizedBox(
       width: 500,
       height: 230,
       child: ListView.builder(

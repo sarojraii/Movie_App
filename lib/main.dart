@@ -40,20 +40,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   splashScreen();
-  // }
-
-  // bool? isLoggedIn;
-  // Future<void> splashScreen() async {
-  //   SharedPreferences _pref = await SharedPreferences.getInstance();
-
-  //   isLoggedIn = await _pref.getBool('isLogged');
-  //   print(isLoggedIn);
-  // }
-
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
